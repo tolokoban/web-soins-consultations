@@ -1,20 +1,25 @@
 import React from "react"
 import Tfw from 'tfw'
 
-
+import Splash from './splash'
 
 import "./App.css"
 
 const Button = Tfw.View.Button
-const _ = Tfw.Intl.make(require("./App.yaml"))
+const Stack = Tfw.Layout.Stack
 
 interface IAppProps {
     className?: string[]
+    page: string
 }
-interface IAppState {}
+interface IAppState { }
 
 export default class App extends React.Component<IAppProps, IAppState> {
     state = {}
+
+    async componentDidMount() {
+        Splash.hide()
+    }
 
     render() {
         const classes = [
@@ -23,7 +28,14 @@ export default class App extends React.Component<IAppProps, IAppState> {
         ]
 
         return (<div className={classes.join(' ')}>
-            <Button label={_('ok')} />
+            <Stack
+                fullscreen={true}
+                scrollable={true}
+                value={this.props.page}
+            >
+                <Button key="patients" label="Hello world!" />
+                <Button key="other" label="How are you?" />
+            </Stack>
         </div>)
     }
 }

@@ -1,0 +1,26 @@
+{
+    "fr": {
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "code": "Code :",
+        "consultations": "Consultations",
+        "consultations-count": "Nb Consultations :",
+        "date-min": "Date de début",
+        "date-max": "Date de fin",
+        "filter": "Filtre",
+        "firstname": "Prénom",
+        "gender": "Genre",
+        "gender-female": "Féminin",
+        "gender-male": "Masculin",
+        "gender-undefined": "Non défini",
+        "identifier": "ID",
+        "lastname": "Nom",
+        "loading": "Chargement en cours...",
+        "logout": "Déconnexion",
+        "patients": "Patients",
+        "patients-count": "Nb Patients :",
+        "secondname": "Second Prénom",
+        "size": "Taille (cm)",
+        "struct": "Structure :"
+    }
+}
