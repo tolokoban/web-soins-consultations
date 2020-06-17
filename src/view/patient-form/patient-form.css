@@ -1,1 +1,10 @@
-div.view-PatientForm {}
+div.view-PatientForm > div.flexRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+div.view-PatientForm > div.flexRow > * {
+    flex: 1 1 auto;
+}

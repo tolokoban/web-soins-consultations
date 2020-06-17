@@ -1,0 +1,1 @@
+export { default } from './patient-short-desc'

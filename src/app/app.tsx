@@ -2,8 +2,11 @@ import React from "react"
 import Tfw from 'tfw'
 
 import Splash from './splash'
+import PagePatients from '../view/page/patients'
+import PageImportPatients from '../view/page/import-patient'
+import { IPatientSummary } from '../types'
 
-import "./App.css"
+import "./app.css"
 
 const Button = Tfw.View.Button
 const Stack = Tfw.Layout.Stack
@@ -11,6 +14,8 @@ const Stack = Tfw.Layout.Stack
 interface IAppProps {
     className?: string[]
     page: string
+    patient: IPatientSummary
+    patients: IPatientSummary[]
 }
 interface IAppState { }
 
@@ -23,7 +28,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     render() {
         const classes = [
-            'App',
+            'App', "thm-bg0",
             ...Tfw.Converter.StringArray(this.props.className, [])
         ]
 
@@ -33,8 +38,14 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 scrollable={true}
                 value={this.props.page}
             >
-                <Button key="patients" label="Hello world!" />
-                <Button key="other" label="How are you?" />
+                <PagePatients
+                    key="patients"
+                    patient={this.props.patient}
+                    patients={this.props.patients}
+                />
+                <PageImportPatients
+                    key="import-patients"
+                />
             </Stack>
         </div>)
     }

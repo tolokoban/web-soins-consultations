@@ -1,0 +1,15 @@
+div.view-page-ImportPatient {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div.view-page-ImportPatient > div.progress {
+    padding: 10vw;
+    width: 100%;
+}
+
+div.view-page-ImportPatient > .back-button {
+    margin-right: 2rem;
+}

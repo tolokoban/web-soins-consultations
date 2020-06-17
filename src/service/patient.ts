@@ -1,13 +1,8 @@
 import Tfw from 'tfw'
-import { IPatient, IPatientSummary } from '../types'
+import { IPatient, IPatientSummary, IRecord } from '../types'
 import FileSystem from "./file-system"
 
 export default { getAllPatients, getPatient, setPatient }
-
-interface IRecord {
-    id: string,
-    [key: string]: string
-}
 
 interface IPatientsFile {
     count: number,
@@ -52,9 +47,9 @@ async function getAllPatients(): Promise<IPatientSummary[]> {
 }
 
 
-async function getPatient(id: string): Promise<IPatient> {
+async function getPatient(id: string, path = "data"): Promise<IPatient> {
     try {
-        const patientContent = await FileSystem.readText(`data/${id}/patient.json`)
+        const patientContent = await FileSystem.readText(`${path}/${id}/patient.json`)
         const patient = JSON.parse(patientContent) as IPatient
         return patient
     }
@@ -81,9 +76,9 @@ async function setPatient(patient: IPatient): Promise<IPatient> {
 function recordToPatientSummary(record: IRecord): IPatientSummary {
     return {
         id: record.id,
-        lastname: record["#PATIENT-LASTNAME"],
-        firstname: record["#PATIENT-FIRSTNAME"],
-        secondname: record["#PATIENT-SECONDNAME"],
+        lastname: Tfw.Util.normalizeLastname(record["#PATIENT-LASTNAME"] || "?"),
+        firstname: Tfw.Util.normalizeFirstname(record["#PATIENT-FIRSTNAME"] || "?"),
+        secondname: Tfw.Util.normalizeFirstname(record["#PATIENT-SECONDNAME"] || ""),
         gender: record["#PATIENT-GENDER"],
         size: Tfw.Converter.Integer(record["#PATIENT-SIZE"], 0),
         birth: new Date(1000 * Tfw.Converter.Integer(record["#PATIENT_BIRTH"], 0))

@@ -1,55 +1,53 @@
 import React from "react"
 import Tfw from 'tfw'
-
-// import { ... } from "../../types"
+import Translate from '../../translate'
+import DateUtil from '../../date-util'
+import TextField from '../field/text'
+import { IPatientSummary } from "../../types"
 
 import "./patient-form.css"
 
-const Combo = Tfw.View.Combo
 const Input = Tfw.View.Input
+const InputDate = Tfw.View.InputDate
 const InputInteger = Tfw.View.InputInteger
-const Flex = Tfw.Layout.Flex
-
-const _ = Tfw.Intl.make(require("./patient-form.json"))
 
 interface IPatientFormProps {
     className?: string | string[]
-    lastname?: string
-    firstname?: string
-    secondname?: string
-    gender?: string
-    birth?: Date
-    size?: number
+    patient: IPatientSummary
+    onChange(patient: IPatientSummary): void
+
 }
-interface IPatientFormState {
-    lastname: string
-    firstname: string
-    secondname: string
-    gender: string
-    birth?: Date
-    size: number
-}
+interface IPatientFormState extends IPatientSummary { }
 
 export default class PatientForm extends React.Component<IPatientFormProps, IPatientFormState> {
     state = {
+        id: "",
         lastname: "",
         firstname: "",
         secondname: "",
         gender: "",
         size: 0,
-        birth: undefined
+        birth: DateUtil.createUndefinedDate()
+    }
+
+    private fireChange = () => {
+
     }
 
     private handleLastnameChange = (lastname: string) => {
-        this.setState({ lastname })
+        this.setState({ lastname }, this.fireChange)
     }
 
     private handleFirstnameChange = (firstname: string) => {
-        this.setState({ firstname })
+        this.setState({ firstname }, this.fireChange)
     }
 
     private handleSecondnameChange = (secondname: string) => {
-        this.setState({ secondname })
+        this.setState({ secondname }, this.fireChange)
+    }
+
+    private handleSizeChange = (size: number) => {
+        this.setState({ size }, this.fireChange)
     }
 
     render() {
@@ -63,26 +61,50 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         } = this.state
 
         return (<div className={classes.join(' ')}>
-            <Flex>
-            <Input
-                label={_('lastname')}
-                wide={true}
-                value={lastname}
-                onChange={this.handleLastnameChange}
-            />
-            <Input
-                label={_('firstname')}
-                wide={true}
-                value={firstname}
-                onChange={this.handleFirstnameChange}
-            />
-            <Input
-                label={_('secondname')}
-                wide={true}
-                value={secondname}
-                onChange={this.handleSecondnameChange}
-            />
-            </Flex>
+            <div className="flexRow">
+                <Input
+                    label={Translate.lastName}
+                    wide={true}
+                    value={lastname}
+                    onChange={this.handleLastnameChange}
+                />
+                <Input
+                    label={Translate.firstName}
+                    wide={true}
+                    value={firstname}
+                    onChange={this.handleFirstnameChange}
+                />
+                <Input
+                    label={Translate.secondName}
+                    wide={true}
+                    value={secondname}
+                    onChange={this.handleSecondnameChange}
+                />
+            </div>
+            <div className="flexRow">
+                <TextField
+                    label={Translate.gender}
+                    wide={true}
+                    type="#GENDER"
+                    value={""}
+                    onChange={() => { }}
+                />
+                <InputDate
+                    label={Translate.birthday}
+                />
+                <TextField
+                    label={Translate.country}
+                    wide={true}
+                    type="#COUNTRY"
+                    value={""}
+                    onChange={country => { console.info("country=", country) }}
+                />
+                <InputInteger
+                    label={Translate.size}
+                    value={size}
+                    onChange={this.handleSizeChange}
+                />
+            </div>
         </div>)
     }
 }

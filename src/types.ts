@@ -88,3 +88,8 @@ export interface IStructure {
         types: string
     }
 }
+
+export interface IRecord {
+    id: string,
+    [key: string]: string
+}

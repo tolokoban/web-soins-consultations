@@ -1,10 +1,12 @@
 {
     "fr": {
+        "birthday": "Date de naissance",
         "cancel": "Annuler",
         "close": "Fermer",
         "code": "Code :",
         "consultations": "Consultations",
         "consultations-count": "Nb Consultations :",
+        "country": "Pays",
         "date-min": "Date de début",
         "date-max": "Date de fin",
         "filter": "Filtre",
@@ -14,6 +16,7 @@
         "gender-male": "Masculin",
         "gender-undefined": "Non défini",
         "identifier": "ID",
+        "import-patients": "Importer des dossiers patients",
         "lastname": "Nom",
         "loading": "Chargement en cours...",
         "logout": "Déconnexion",
