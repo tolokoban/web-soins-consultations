@@ -14,6 +14,7 @@ const INITIAL_STATE: IAppState = {
         secondname: "",
         gender: "X",
         size: 0,
+        country: "",
         birth: DateUtil.createUndefinedDate()
     },
     patients: []

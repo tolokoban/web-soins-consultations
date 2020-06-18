@@ -101,7 +101,7 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                 {
                     count > 0 &&
                     <Progress
-                        label={`Importation de ${count} patient${count > 1 ? "s" : ""}`}
+                        label={`Importation de ${count} patient${count > 1 ? "s" : ""} (${Math.floor(0.5 + 100 * progress)}%)`}
                         value={progress}
                         wide={true}
                         height="2rem"
@@ -109,7 +109,9 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                 }
                 {
                     patient &&
-                    <PatientShortDesc patient={patient}/>
+                    <div className="patient-desc">
+                        <PatientShortDesc patient={patient}/>
+                    </div>
                 }
             </div>
         </div>)

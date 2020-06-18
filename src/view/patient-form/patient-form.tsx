@@ -27,6 +27,7 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         secondname: "",
         gender: "",
         size: 0,
+        country: "",
         birth: DateUtil.createUndefinedDate()
     }
 
@@ -61,50 +62,51 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         } = this.state
 
         return (<div className={classes.join(' ')}>
-            <div className="flexRow">
-                <Input
-                    label={Translate.lastName}
-                    wide={true}
-                    value={lastname}
-                    onChange={this.handleLastnameChange}
-                />
-                <Input
-                    label={Translate.firstName}
-                    wide={true}
-                    value={firstname}
-                    onChange={this.handleFirstnameChange}
-                />
-                <Input
-                    label={Translate.secondName}
-                    wide={true}
-                    value={secondname}
-                    onChange={this.handleSecondnameChange}
-                />
-            </div>
-            <div className="flexRow">
-                <TextField
-                    label={Translate.gender}
-                    wide={true}
-                    type="#GENDER"
-                    value={""}
-                    onChange={() => { }}
-                />
-                <InputDate
-                    label={Translate.birthday}
-                />
-                <TextField
-                    label={Translate.country}
-                    wide={true}
-                    type="#COUNTRY"
-                    value={""}
-                    onChange={country => { console.info("country=", country) }}
-                />
-                <InputInteger
-                    label={Translate.size}
-                    value={size}
-                    onChange={this.handleSizeChange}
-                />
-            </div>
+            <Input
+                label={Translate.lastName}
+                transform={Tfw.Util.normalizeLastname}
+                wide={true}
+                value={lastname}
+                onChange={this.handleLastnameChange}
+            />
+            <Input
+                label={Translate.firstName}
+                transform={Tfw.Util.normalizeFirstname}
+                wide={true}
+                value={firstname}
+                onChange={this.handleFirstnameChange}
+            />
+            <Input
+                label={Translate.secondName}
+                transform={Tfw.Util.normalizeFirstname}
+                wide={true}
+                value={secondname}
+                onChange={this.handleSecondnameChange}
+            />
+            <TextField
+                label={Translate.gender}
+                wide={true}
+                type="#GENDER"
+                value={gender}
+                onChange={gender => this.setState({ gender })}
+            />
+            <InputDate
+                label={Translate.birthday}
+                value={birth.getTime()}
+                onChange={time => this.setState({ birth: new Date(time) })}
+            />
+            <TextField
+                label={Translate.country}
+                wide={true}
+                type="#COUNTRY"
+                value={""}
+                onChange={country => { console.info("country=", country) }}
+            />
+            <InputInteger
+                label={Translate.size}
+                value={size}
+                onChange={this.handleSizeChange}
+            />
         </div>)
     }
 }

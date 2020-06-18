@@ -1,6 +1,7 @@
 import Tfw from 'tfw'
 import { IPatient, IPatientSummary, IRecord } from '../types'
 import FileSystem from "./file-system"
+import Structure from '../structure'
 
 export default { getAllPatients, getPatient, setPatient }
 
@@ -80,6 +81,7 @@ function recordToPatientSummary(record: IRecord): IPatientSummary {
         firstname: Tfw.Util.normalizeFirstname(record["#PATIENT-FIRSTNAME"] || "?"),
         secondname: Tfw.Util.normalizeFirstname(record["#PATIENT-SECONDNAME"] || ""),
         gender: record["#PATIENT-GENDER"],
+        country: Structure.getValueCaption("#COUNTRY", record["#PATIENT-COUNTRY"]),
         size: Tfw.Converter.Integer(record["#PATIENT-SIZE"], 0),
         birth: new Date(1000 * Tfw.Converter.Integer(record["#PATIENT_BIRTH"], 0))
     }

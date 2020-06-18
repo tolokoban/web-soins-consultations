@@ -13,3 +13,7 @@ div.view-page-ImportPatient > div.progress {
 div.view-page-ImportPatient > .back-button {
     margin-right: 2rem;
 }
+
+div.view-page-ImportPatient div.patient-desc {
+    margin: 1rem 0;
+}

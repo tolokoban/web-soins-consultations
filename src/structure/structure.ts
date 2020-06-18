@@ -1,4 +1,5 @@
 import Tfw from 'tfw'
+import Settings from '../settings'
 import { IStructure, IPatientField } from "../types"
 
 const Intl = Tfw.Intl
@@ -6,11 +7,19 @@ const Intl = Tfw.Intl
 export default {
     createPatientsFieldsFromStructure,
     createPatientsFieldsCaptionsFromStructure,
+    getCurrentStructure,
     getFieldCaption,
-    // getCurrentStructure
+    getValueCaption
 }
 
-function createPatientsFieldsFromStructure(structure: IStructure): { [key: string]: boolean } {
+function getCurrentStructure(): IStructure {
+    const structure = Settings.structure
+    if (!structure) throw Error("Structure has not been initialized yet!")
+    return structure
+}
+
+function createPatientsFieldsFromStructure(): { [key: string]: boolean } {
+    const structure = getCurrentStructure()
     const patientsFields: { [key: string]: boolean } = {};
     structure.patientFields.forEach((patientField: IPatientField) => {
         patientsFields[patientField.id] = true;
@@ -18,7 +27,8 @@ function createPatientsFieldsFromStructure(structure: IStructure): { [key: strin
     return patientsFields;
 }
 
-function createPatientsFieldsCaptionsFromStructure(structure: IStructure): { [key: string]: string } {
+function createPatientsFieldsCaptionsFromStructure(): { [key: string]: string } {
+    const structure = getCurrentStructure()
     const patientsFieldsCaptions: { [key: string]: string } = {};
     structure.patientFields.forEach((patientField: IPatientField) => {
         patientsFieldsCaptions[patientField.id] = Intl.toText(patientField.caption);
@@ -26,33 +36,30 @@ function createPatientsFieldsCaptionsFromStructure(structure: IStructure): { [ke
     return patientsFieldsCaptions;
 }
 
-function getFieldCaption(key: string, structure: IStructure) {
-    if (key.charAt(0) !== '#') return key;
+/**
+ * Return the caption of a field, given its key or caption.
+ */
+function getFieldCaption(fieldKey: string): string {
+    const structure = getCurrentStructure()
+    if (fieldKey.charAt(0) !== '#') return fieldKey;
     const item: { caption: string, type: string } | undefined =
-        structure.formFields[key];
-    if (!item) return key;
+        structure.formFields[fieldKey];
+    if (!item) return fieldKey;
     return Intl.toText(item.caption);
 }
 
-// function getCurrentStructure(): IStructure | null {
-//     const state = State.store.getState()
-//     const carecenter = state.current.carecenter
-//     if (!carecenter) return null
-//     const structureId = carecenter.structureId
-//     const structure = state.structures.find(
-//         struc => struc.id === structureId
-//     )
-//     if (!structure) return null
-//     return structure
-// }
-
-
-class Structure {
-    public readonly data: IStructure
-
-    constructor(data: IStructure) {
-        this.data = data
+function getValueCaption(typeKey: string, valueKey: string): string {
+    const structure = getCurrentStructure()
+    const types = structure.types
+    const type = types[typeKey]
+    if (!type) return valueKey
+    const normalizedValue = valueKey.trim().toLowerCase()
+    for (const subType of Object.values(type.children)) {
+        const caption = subType.caption
+        if (!caption) continue
+        if (caption.toLowerCase() === normalizedValue) {
+            return subType.id
+        }
     }
-
-
+    return valueKey
 }

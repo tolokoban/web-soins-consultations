@@ -36,6 +36,7 @@ export interface IPatientSummary {
     firstname: string
     secondname: string
     gender: string
+    country: string
     birth: Date
     size: number
 }

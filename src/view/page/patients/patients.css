@@ -1,19 +1,13 @@
 div.view-page-Patients {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-}
-
-div.view-page-Patients > section {
-    flex: 1 1 auto;
-}
-
-div.view-page-Patients > footer {
-    display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: center;
-    flex: 0 0 auto;
-    padding: 0.25rem 0.5rem;
+    align-items: flex-start;
+}
+
+div.view-page-Patients >div.patients-form {
+    max-width: 400px;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: .5rem;
 }
