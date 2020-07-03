@@ -20,7 +20,7 @@
         "typescript": "^3.7.5"
     },
     "scripts": {
-        "postbuild": "find build/ -type f -exec md5sum {} \\; > build/package.txt",
+        "postbuild": "cd build ; rm -rf web-soins-consultations/ ; find . -type f -exec md5sum {} \\; > package.txt",
         "start": "nw-react-scripts start",
         "build": "nw-react-scripts build",
         "test": "nw-react-scripts test",
@@ -46,8 +46,6 @@
     "nwBuilder": {
         "//": "https://github.com/nwjs-community/nw-builder",
         "platforms": [
-            "osx64",
-            "win32",
             "win64"
         ],
         "version": "latest",
