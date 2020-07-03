@@ -1,0 +1,16 @@
+{
+  "name": "upgrader",
+  "version": "1.0.0",
+  "description": "Upgrading web-soins-consultations NW.js application",
+  "main": "upgrader.js",
+  "scripts": {
+    "start": "tsc --watch upgrader.ts",
+    "test": "node upgrader.js ../build https://raw.githubusercontent.com/tolokoban/web-soins-consultations/gh-pages/"
+  },
+  "author": "Tolokoban",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "node-fetch": "^2.6.0"
+  }
+}
