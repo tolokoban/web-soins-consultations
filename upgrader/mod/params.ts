@@ -18,7 +18,7 @@ The Upgrader needs two params:
         const [, , path, url] = process.argv
         return {
             url,
-            path: Path.resolve(__dirname, '..', path)
+            path: Path.resolve(process.cwd(), '..', path)
         }
     }
 }
