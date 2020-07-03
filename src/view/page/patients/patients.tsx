@@ -31,31 +31,42 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
         const { patient, patients } = this.props
 
         return (<div className={classes.join(' ')}>
-            <div className="patients-form thm-bg2 thm-ele-button">
-                <h1>Données démographiques du patient</h1>
-                <PatientForm
-                    patient={patient}
-                    onChange={this.handlePatientChange}
-                />
-                <p>Si le <b>patients existe déjà</b> dans la colonne de droite,
-                    <b>cliquez dessus</b> pour voir ses anciennes consultations
-                    et éventuellement en ajouter une nouvelle.</p>
+            <header className="thm-bgPD">
                 <Button
-                    icon="add"
-                    wide={true}
-                    label="Ajouter un nouveau patient"
+                    icon="close"
+                    small={true}
                     warning={true}
+                    label="Quitter"
+                    onClick={() => process.exit(0)}
                 />
-            </div>
-            <div className="patients-list">
-                <h1>Patients ayant consulté: {patients.length}</h1>
-
+                <div>WebSoins Consultations</div>
                 <Button
                     label={Translate.importPatients}
                     icon="import"
                     onClick={() => State.setPage("import-patients")}
                 />
-            </div>
+            </header>
+            <section>
+                <div className="patients-form thm-bg2 thm-ele-button">
+                    <h1>Données démographiques du patient</h1>
+                    <PatientForm
+                        patient={patient}
+                        onChange={this.handlePatientChange}
+                    />
+                    <p>Si le <b>patients existe déjà</b> dans la colonne de droite,
+                    <b>cliquez dessus</b> pour voir ses anciennes consultations
+                    et éventuellement en ajouter une nouvelle.</p>
+                    <Button
+                        icon="add"
+                        wide={true}
+                        label="Ajouter un nouveau patient"
+                        warning={true}
+                    />
+                </div>
+                <div className="patients-list">
+                    <h1>Patients ayant consulté: {patients.length}</h1>
+                </div>
+            </section>
         </div>)
     }
 }
