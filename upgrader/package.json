@@ -1,5 +1,5 @@
 {
-  "name": "upgrader",
+  "name": "tolokoban-upgrader",
   "version": "1.0.0",
   "description": "Upgrading web-soins-consultations NW.js application",
   "main": "upgrader.js",

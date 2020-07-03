@@ -42,6 +42,7 @@ var Path = require('path');
 var Chalk = require('chalk');
 var RX_HASH = /^([0-9a-f]+)[ \t]+(.+)$/g;
 exports["default"] = {
+    findHashFromPath: findHashFromPath,
     findPathFromHash: findPathFromHash,
     loadFromFile: loadFromFile,
     parse: parse
@@ -96,6 +97,14 @@ function findPathFromHash(checksums, hash) {
         var checksum = checksums_1[_i];
         if (hash === checksum.hash)
             return checksum.path;
+    }
+    return null;
+}
+function findHashFromPath(checksums, path) {
+    for (var _i = 0, checksums_2 = checksums; _i < checksums_2.length; _i++) {
+        var checksum = checksums_2[_i];
+        if (path === checksum.path)
+            return checksum.hash;
     }
     return null;
 }

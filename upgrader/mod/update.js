@@ -36,25 +36,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-/**
- *
- */
+var check_sums_1 = require("./check-sums");
+var file_system_1 = require("./file-system");
 var FS = require('fs');
 var Path = require('path');
 var Chalk = require('chalk');
 var PACKAGE_REL_PATH = "_PACKAGE_";
 function applyIfExists(path) {
     return __awaiter(this, void 0, void 0, function () {
-        var pkgPath;
+        var pkgPath, checkSums, _i, checkSums_1, chksum, filename;
         return __generator(this, function (_a) {
-            console.log(Chalk.bold.cyan("Apply previously downloaded updates, if any..."));
-            pkgPath = Path.resolve(path, PACKAGE_REL_PATH);
-            if (!FS.existsSync(pkgPath)) {
-                FS.mkdirSync(pkgPath);
-                console.log("   > \"" + PACKAGE_REL_PATH + "\" not found in \"" + path + "\"!");
-                return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    console.log(Chalk.bold.cyan("Apply previously downloaded updates, if any..."));
+                    pkgPath = Path.resolve(path, PACKAGE_REL_PATH);
+                    if (!FS.existsSync(pkgPath)) {
+                        FS.mkdirSync(pkgPath);
+                        console.log("  > \"" + PACKAGE_REL_PATH + "\" not found in \"" + path + "\"!");
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, check_sums_1["default"].loadFromFile(pkgPath)];
+                case 1:
+                    checkSums = _a.sent();
+                    if (checkSums.length === 0) {
+                        console.log("  > Nothing to update.");
+                        return [2 /*return*/];
+                    }
+                    console.log("  > Cleaning \"" + Chalk.gray(path) + "\"...");
+                    return [4 /*yield*/, file_system_1["default"].cleanPath(path)];
+                case 2:
+                    _a.sent();
+                    _i = 0, checkSums_1 = checkSums;
+                    _a.label = 3;
+                case 3:
+                    if (!(_i < checkSums_1.length)) return [3 /*break*/, 6];
+                    chksum = checkSums_1[_i];
+                    filename = chksum.path;
+                    console.log("  > Copy \"" + Chalk.gray(filename) + "\"");
+                    return [4 /*yield*/, file_system_1["default"].copyFile(Path.resolve(pkgPath, filename), Path.resolve(path, filename))];
+                case 4:
+                    _a.sent();
+                    _a.label = 5;
+                case 5:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 6:
+                    console.log("  > Cleaning \"" + Chalk.gray(pkgPath) + "\"...");
+                    return [4 /*yield*/, file_system_1["default"].cleanPath(pkgPath)];
+                case 7:
+                    _a.sent();
+                    return [2 /*return*/];
             }
-            return [2 /*return*/];
         });
     });
 }

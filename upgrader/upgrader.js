@@ -41,13 +41,14 @@ var params_1 = require("./mod/params");
 var remote_1 = require("./mod/remote");
 var update_1 = require("./mod/update");
 var webkit_1 = require("./mod/webkit");
+var Chalk = require("chalk");
 function start() {
     return __awaiter(this, void 0, void 0, function () {
         var _a, url, path, remote, ex_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _b.trys.push([0, 5, , 6]);
                     _a = params_1["default"].parse(), url = _a.url, path = _a.path;
                     return [4 /*yield*/, update_1["default"].applyIfExists(path)];
                 case 1:
@@ -56,15 +57,22 @@ function start() {
                 case 2:
                     _b.sent();
                     webkit_1["default"].exec(path);
-                    remote = remote_1["default"].create(path, url);
+                    return [4 /*yield*/, remote_1["default"].create(path, url)];
+                case 3:
+                    remote = _b.sent();
                     if (!remote)
                         return [2 /*return*/];
-                    return [3 /*break*/, 4];
-                case 3:
+                    remote.prepareUpdate();
+                    return [4 /*yield*/, remote.execUpdate()];
+                case 4:
+                    _b.sent();
+                    console.log(Chalk.bold.cyan("Done."));
+                    return [3 /*break*/, 6];
+                case 5:
                     ex_1 = _b.sent();
                     errors_1["default"].print(ex_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     });

@@ -2,9 +2,10 @@
  * Deals with anything from the update website.
  *
  */
-import Errors from './errors'
 import CheckSums from './check-sums'
+import Errors from './errors'
 import FileSystem from './file-system'
+import Update from './update'
 
 const FS = require('fs')
 const Path = require('path')
@@ -22,13 +23,74 @@ async function fetchText(url: string): Promise<string> {
 }
 
 class Remote {
+    private filesToKeep: string[] = []
+    private filesToDownload: string[] = []
+
     constructor(
+        private url: string,
         private path: string,
         private localCheckSums: ICheckSum[],
         private remoteCheckSums: ICheckSum[]
     ) {
         console.log(`  > Remote files: ${remoteCheckSums.length}`)
         console.log(`  > Local files: ${localCheckSums.length}`)
+    }
+
+    /**
+     * `remoteCheckSums` is the list of the new files.
+     * `localCheckSums` is the list of the old files.
+     *
+     */
+    prepareUpdate() {
+        const { remoteCheckSums, localCheckSums } = this
+        const filesToKeep: string[] = []
+        const filesToDownload: string[] = []
+
+        for (const remoteChk of remoteCheckSums) {
+            // Do not update "package.txt"
+            if (remoteChk.path === './package.txt') continue
+
+            const localHash = CheckSums.findHashFromPath(localCheckSums, remoteChk.path)
+            if (localHash === remoteChk.hash) {
+                // Same hash ~ same file
+                filesToKeep.push(remoteChk.path)
+            } else {
+                // File has changed.
+                filesToDownload.push(remoteChk.path)
+            }
+        }
+
+        this.filesToKeep = filesToKeep
+        this.filesToDownload = filesToDownload
+    }
+
+    async execUpdate() {
+        const { url, path, filesToKeep, filesToDownload } = this
+        if (filesToDownload.length === 0) {
+            console.log("  > No new upgrade.")
+            return
+        }
+        const destination = Path.resolve(path, Update.PACKAGE_REL_PATH)
+
+        console.log("  > Cleaning destination folder:", destination)
+        await FileSystem.cleanPath(destination)
+
+        console.log("  > Files to KEEP:", filesToKeep.length)
+        for (const filename of filesToKeep) {
+            console.log(`    > Copy "${Chalk.bold(filename)}"...`)
+            await FileSystem.copyFile(
+                Path.resolve(path, filename),
+                Path.resolve(destination, filename)
+            )
+        }
+        console.log("  > Files to DOWNLOAD:", filesToDownload.length)
+        for (const filename of filesToDownload) {
+            console.log(`    > Download "${Chalk.bold(filename)}"...`)
+            await downloadTo(`${url}/${filename}`, Path.resolve(destination, filename))
+        }
+
+        // Everything is alright, we can download "package.txt".
+        await downloadTo(`${url}/package.txt`, Path.resolve(destination, "package.txt"))
     }
 }
 
@@ -51,7 +113,7 @@ export default {
                 const packageTxtContent = await fetchText(packageUrl)
                 const remoteCheckSums = CheckSums.parse(packageTxtContent)
                 const localCheckSums = await CheckSums.loadFromFile(path)
-                resolve(new Remote(path, localCheckSums, remoteCheckSums))
+                resolve(new Remote(url, path, localCheckSums, remoteCheckSums))
             } catch (ex) {
                 printFetchError(ex, packageUrl)
                 resolve(null)
@@ -88,7 +150,7 @@ async function execFullDownloadIfNeeded(path: string, url: string) {
     }
 
     console.log(`  > Cleaning "${path}"...`)
-    await cleanPath(path)
+    await FileSystem.cleanPath(path)
 
     await execFullDownload(path, url, remoteCheckSums)
 }
@@ -115,41 +177,6 @@ async function downloadTo(url: string, destinationPath: string): Promise<boolean
         return false
     }
 }
-
-async function cleanPath(path: string) {
-    const pathOfFolderToSkip = Path.resolve(path, "data")
-    const filesToRemove: string[] = []
-    const foldersToRemove: string[] = []
-    const foldersToVisit: string[] = [path]
-    while (foldersToVisit.length > 0) {
-        const currentFolder = foldersToVisit.pop()
-        if (!currentFolder) continue
-        if (currentFolder !== path) {
-            foldersToRemove.unshift(currentFolder)
-        }
-        const dirInfo = await FileSystem.readDir(currentFolder)
-
-        filesToRemove.push(
-            ...dirInfo.files.map(base => Path.resolve(dirInfo.path, base))
-        )
-        foldersToVisit.push(
-            ...dirInfo.folders
-                .map(base => Path.resolve(dirInfo.path, base))
-                .filter(path => path !== pathOfFolderToSkip)
-        )
-    }
-    console.log(`    > Deleting ${filesToRemove.length} file${filesToRemove.length > 1 ? "s" : ""}...`)
-    for (const file of filesToRemove) {
-        console.log(`      > ${file}`)
-        await FileSystem.deleteFile(file)
-    }
-    console.log(`    > Deleting ${foldersToRemove.length} folder${foldersToRemove.length > 1 ? "s" : ""}...`)
-    for (const folder of foldersToRemove) {
-        console.log(`      > ${folder}`)
-        await FileSystem.deleteFolder(folder)
-    }
-}
-
 
 function printFetchError(ex: any, url: string) {
     if (typeof ex.code !== 'string') {

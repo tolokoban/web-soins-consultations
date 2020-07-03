@@ -40,9 +40,10 @@ exports.__esModule = true;
  * Deals with anything from the update website.
  *
  */
-var errors_1 = require("./errors");
 var check_sums_1 = require("./check-sums");
+var errors_1 = require("./errors");
 var file_system_1 = require("./file-system");
+var update_1 = require("./update");
 var FS = require('fs');
 var Path = require('path');
 var Chalk = require('chalk');
@@ -62,13 +63,99 @@ function fetchText(url) {
     });
 }
 var Remote = /** @class */ (function () {
-    function Remote(path, localCheckSums, remoteCheckSums) {
+    function Remote(url, path, localCheckSums, remoteCheckSums) {
+        this.url = url;
         this.path = path;
         this.localCheckSums = localCheckSums;
         this.remoteCheckSums = remoteCheckSums;
+        this.filesToKeep = [];
+        this.filesToDownload = [];
         console.log("  > Remote files: " + remoteCheckSums.length);
         console.log("  > Local files: " + localCheckSums.length);
     }
+    /**
+     * `remoteCheckSums` is the list of the new files.
+     * `localCheckSums` is the list of the old files.
+     *
+     */
+    Remote.prototype.prepareUpdate = function () {
+        var _a = this, remoteCheckSums = _a.remoteCheckSums, localCheckSums = _a.localCheckSums;
+        var filesToKeep = [];
+        var filesToDownload = [];
+        for (var _i = 0, remoteCheckSums_1 = remoteCheckSums; _i < remoteCheckSums_1.length; _i++) {
+            var remoteChk = remoteCheckSums_1[_i];
+            // Do not update "package.txt"
+            if (remoteChk.path === './package.txt')
+                continue;
+            var localHash = check_sums_1["default"].findHashFromPath(localCheckSums, remoteChk.path);
+            if (localHash === remoteChk.hash) {
+                // Same hash ~ same file
+                filesToKeep.push(remoteChk.path);
+            }
+            else {
+                // File has changed.
+                filesToDownload.push(remoteChk.path);
+            }
+        }
+        this.filesToKeep = filesToKeep;
+        this.filesToDownload = filesToDownload;
+    };
+    Remote.prototype.execUpdate = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, url, path, filesToKeep, filesToDownload, destination, _i, filesToKeep_1, filename, _b, filesToDownload_1, filename;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = this, url = _a.url, path = _a.path, filesToKeep = _a.filesToKeep, filesToDownload = _a.filesToDownload;
+                        if (filesToDownload.length === 0) {
+                            console.log("  > No new upgrade.");
+                            return [2 /*return*/];
+                        }
+                        destination = Path.resolve(path, update_1["default"].PACKAGE_REL_PATH);
+                        console.log("  > Cleaning destination folder:", destination);
+                        return [4 /*yield*/, file_system_1["default"].cleanPath(destination)];
+                    case 1:
+                        _c.sent();
+                        console.log("  > Files to KEEP:", filesToKeep.length);
+                        _i = 0, filesToKeep_1 = filesToKeep;
+                        _c.label = 2;
+                    case 2:
+                        if (!(_i < filesToKeep_1.length)) return [3 /*break*/, 5];
+                        filename = filesToKeep_1[_i];
+                        console.log("    > Copy \"" + Chalk.bold(filename) + "\"...");
+                        return [4 /*yield*/, file_system_1["default"].copyFile(Path.resolve(path, filename), Path.resolve(destination, filename))];
+                    case 3:
+                        _c.sent();
+                        _c.label = 4;
+                    case 4:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 5:
+                        console.log("  > Files to DOWNLOAD:", filesToDownload.length);
+                        _b = 0, filesToDownload_1 = filesToDownload;
+                        _c.label = 6;
+                    case 6:
+                        if (!(_b < filesToDownload_1.length)) return [3 /*break*/, 9];
+                        filename = filesToDownload_1[_b];
+                        console.log("    > Download \"" + Chalk.bold(filename) + "\"...");
+                        return [4 /*yield*/, downloadTo(url + "/" + filename, Path.resolve(destination, filename))];
+                    case 7:
+                        _c.sent();
+                        _c.label = 8;
+                    case 8:
+                        _b++;
+                        return [3 /*break*/, 6];
+                    case 9: 
+                    // Everything is alright, we can download "package.txt".
+                    return [4 /*yield*/, downloadTo(url + "/package.txt", Path.resolve(destination, "package.txt"))];
+                    case 10:
+                        // Everything is alright, we can download "package.txt".
+                        _c.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     return Remote;
 }());
 exports["default"] = {
@@ -100,7 +187,7 @@ exports["default"] = {
                         return [4 /*yield*/, check_sums_1["default"].loadFromFile(path)];
                     case 3:
                         localCheckSums = _a.sent();
-                        resolve(new Remote(path, localCheckSums, remoteCheckSums));
+                        resolve(new Remote(url, path, localCheckSums, remoteCheckSums));
                         return [3 /*break*/, 5];
                     case 4:
                         ex_1 = _a.sent();
@@ -151,7 +238,7 @@ function execFullDownloadIfNeeded(path, url) {
                     return [2 /*return*/];
                 case 5:
                     console.log("  > Cleaning \"" + path + "\"...");
-                    return [4 /*yield*/, cleanPath(path)];
+                    return [4 /*yield*/, file_system_1["default"].cleanPath(path)];
                 case 6:
                     _a.sent();
                     return [4 /*yield*/, execFullDownload(path, url, remoteCheckSums)];
@@ -212,80 +299,6 @@ function downloadTo(url, destinationPath) {
                     errors_1["default"].print(ex_3);
                     return [2 /*return*/, false];
                 case 5: return [2 /*return*/];
-            }
-        });
-    });
-}
-function cleanPath(path) {
-    return __awaiter(this, void 0, void 0, function () {
-        var pathOfFolderToSkip, filesToRemove, foldersToRemove, foldersToVisit, _loop_1, _i, filesToRemove_1, file, _a, foldersToRemove_1, folder;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    pathOfFolderToSkip = Path.resolve(path, "data");
-                    filesToRemove = [];
-                    foldersToRemove = [];
-                    foldersToVisit = [path];
-                    _loop_1 = function () {
-                        var currentFolder, dirInfo;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    currentFolder = foldersToVisit.pop();
-                                    if (!currentFolder)
-                                        return [2 /*return*/, "continue"];
-                                    if (currentFolder !== path) {
-                                        foldersToRemove.unshift(currentFolder);
-                                    }
-                                    return [4 /*yield*/, file_system_1["default"].readDir(currentFolder)];
-                                case 1:
-                                    dirInfo = _a.sent();
-                                    filesToRemove.push.apply(filesToRemove, dirInfo.files.map(function (base) { return Path.resolve(dirInfo.path, base); }));
-                                    foldersToVisit.push.apply(foldersToVisit, dirInfo.folders
-                                        .map(function (base) { return Path.resolve(dirInfo.path, base); })
-                                        .filter(function (path) { return path !== pathOfFolderToSkip; }));
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _b.label = 1;
-                case 1:
-                    if (!(foldersToVisit.length > 0)) return [3 /*break*/, 3];
-                    return [5 /*yield**/, _loop_1()];
-                case 2:
-                    _b.sent();
-                    return [3 /*break*/, 1];
-                case 3:
-                    console.log("    > Deleting " + filesToRemove.length + " file" + (filesToRemove.length > 1 ? "s" : "") + "...");
-                    _i = 0, filesToRemove_1 = filesToRemove;
-                    _b.label = 4;
-                case 4:
-                    if (!(_i < filesToRemove_1.length)) return [3 /*break*/, 7];
-                    file = filesToRemove_1[_i];
-                    console.log("      > " + file);
-                    return [4 /*yield*/, file_system_1["default"].deleteFile(file)];
-                case 5:
-                    _b.sent();
-                    _b.label = 6;
-                case 6:
-                    _i++;
-                    return [3 /*break*/, 4];
-                case 7:
-                    console.log("    > Deleting " + foldersToRemove.length + " folder" + (foldersToRemove.length > 1 ? "s" : "") + "...");
-                    _a = 0, foldersToRemove_1 = foldersToRemove;
-                    _b.label = 8;
-                case 8:
-                    if (!(_a < foldersToRemove_1.length)) return [3 /*break*/, 11];
-                    folder = foldersToRemove_1[_a];
-                    console.log("      > " + folder);
-                    return [4 /*yield*/, file_system_1["default"].deleteFolder(folder)];
-                case 9:
-                    _b.sent();
-                    _b.label = 10;
-                case 10:
-                    _a++;
-                    return [3 /*break*/, 8];
-                case 11: return [2 /*return*/];
             }
         });
     });

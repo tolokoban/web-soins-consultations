@@ -1,3 +1,4 @@
+import Update from './update'
 import Errors from './errors'
 import mkdirp from './mkdirp'
 
@@ -18,6 +19,8 @@ interface IDirectoryEntry {
 }
 
 export default {
+    cleanPath,
+    copyFile,
     deleteFile,
     deleteFolder,
     readDir,
@@ -85,4 +88,62 @@ function writeBuffer(path: string, buffer) {
             resolve()
         })
     })
+}
+
+
+function copyFile(srcPath: string, dstPath: string) {
+    return new Promise((resolve, reject) => {
+        if (!FS.existsSync(srcPath)) {
+            return reject(`File not found: "${srcPath}"!`)
+        }
+        const dirname = Path.dirname(dstPath)
+        mkdirp(dirname, (err: any) => {
+            if (err) reject(err)
+            try {
+                const buffer = FS.readFileSync(srcPath)
+                FS.writeFileSync(dstPath, buffer)
+            } catch (ex) {
+                reject(ex)
+            }
+            resolve()
+        })
+    })
+}
+
+
+async function cleanPath(path: string) {
+    const pathesOfFolderToSkip = [
+        Path.resolve(path, "data"),
+        Path.resolve(path, Update.PACKAGE_REL_PATH)
+    ]
+    const filesToRemove: string[] = []
+    const foldersToRemove: string[] = []
+    const foldersToVisit: string[] = [path]
+    while (foldersToVisit.length > 0) {
+        const currentFolder = foldersToVisit.pop()
+        if (!currentFolder) continue
+        if (currentFolder !== path) {
+            foldersToRemove.unshift(currentFolder)
+        }
+        const dirInfo = await readDir(currentFolder)
+
+        filesToRemove.push(
+            ...dirInfo.files.map(base => Path.resolve(dirInfo.path, base))
+        )
+        foldersToVisit.push(
+            ...dirInfo.folders
+                .map(base => Path.resolve(dirInfo.path, base))
+                .filter(path => pathesOfFolderToSkip.indexOf(path) === -1)
+        )
+    }
+    console.log(`    > Deleting ${filesToRemove.length} file${filesToRemove.length > 1 ? "s" : ""}...`)
+    for (const file of filesToRemove) {
+        console.log(`      > ${file}`)
+        await deleteFile(file)
+    }
+    console.log(`    > Deleting ${foldersToRemove.length} folder${foldersToRemove.length > 1 ? "s" : ""}...`)
+    for (const folder of foldersToRemove) {
+        console.log(`      > ${folder}`)
+        await deleteFolder(folder)
+    }
 }

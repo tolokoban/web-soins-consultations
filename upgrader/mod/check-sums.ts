@@ -12,6 +12,7 @@ interface ICheckSum {
 const RX_HASH = /^([0-9a-f]+)[ \t]+(.+)$/g
 
 export default {
+    findHashFromPath,
     findPathFromHash,
     loadFromFile,
     parse
@@ -62,6 +63,13 @@ async function loadFromFile(path: string): Promise<ICheckSum[]> {
 function findPathFromHash(checksums: ICheckSum[], hash: string): string | null {
     for (const checksum of checksums) {
         if (hash === checksum.hash) return checksum.path
+    }
+    return null
+}
+
+function findHashFromPath(checksums: ICheckSum[], path: string): string | null {
+    for (const checksum of checksums) {
+        if (path === checksum.path) return checksum.hash
     }
     return null
 }
