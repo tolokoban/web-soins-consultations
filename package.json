@@ -43,7 +43,9 @@
         ]
     },
     "main": "index.html",
-    "min_height": 800,
+    "window": {
+        "fullscreen": true
+    },
     "nwBuilder": {
         "//": "https://github.com/nwjs-community/nw-builder",
         "platforms": [
