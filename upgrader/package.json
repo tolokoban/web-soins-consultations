@@ -1,6 +1,6 @@
 {
   "name": "tolokoban-upgrader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Upgrading web-soins-consultations NW.js application",
   "main": "upgrader.js",
   "scripts": {

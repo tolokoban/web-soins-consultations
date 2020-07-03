@@ -10,7 +10,7 @@ exports["default"] = {
         var _a = process.argv, path = _a[2], url = _a[3];
         return {
             url: url,
-            path: Path.resolve(process.cwd(), '..', path)
+            path: Path.resolve(process.cwd(), path)
         };
     }
 };
