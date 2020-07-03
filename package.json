@@ -20,9 +20,10 @@
         "typescript": "^3.7.5"
     },
     "scripts": {
-        "postbuild": "cd build ; rm -rf web-soins-consultations/ ; find . -type f -exec md5sum {} \\; > package.txt",
+        "postbuild": "cd build ; rm -rf web-soins-consultations/ ; find . -type f -exec sha256sum {} \\; > package.txt",
         "start": "nw-react-scripts start",
         "build": "nw-react-scripts build",
+        "deploy": "gh-pages -d build",
         "test": "nw-react-scripts test",
         "eject": "nw-react-scripts eject"
     },
