@@ -1,0 +1,2 @@
+(this["webpackJsonpweb-soins-consultations"]=this["webpackJsonpweb-soins-consultations"]||[]).push([[4],{84:function(n,o,s){"use strict";var t=function(){function n(n){this.name=n}return n.prototype.load=function(){console.log("Font loaded: ",this.name)},n}();o.a=t},85:function(n,o,s){},89:function(n,o,s){"use strict";s.r(o);var t=s(84);s(85);o.default=new t.a("josefin-sans")}}]);
+//# sourceMappingURL=4.6c05279e.chunk.js.map
