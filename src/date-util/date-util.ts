@@ -1,6 +1,7 @@
 export default {
     createUndefinedDate,
     date2seconds,
+    formatDate,
     isDefinedDate,
     seconds2date
 }
@@ -28,4 +29,15 @@ function seconds2date(seconds: number): Date {
 function date2seconds(date: Date): number {
     const CONVERSION = 0.001
     return Math.floor(date.getTime() * CONVERSION)
+}
+
+const dateFormatter = new Intl.DateTimeFormat(["fr-CM"], {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+})
+
+function formatDate(date: Date): string {
+    return dateFormatter.format(date)
 }

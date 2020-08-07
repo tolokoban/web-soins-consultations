@@ -16,7 +16,7 @@
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
         "redux": "^4.0.5",
-        "tfw": "^0.35.1",
+        "tfw": "^0.35.6",
         "typescript": "^3.7.5"
     },
     "scripts": {

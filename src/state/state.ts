@@ -57,6 +57,14 @@ function reducer(
 
 export default {
     store,
+    clearPatient() {
+        const patient: IPatientSummary = {
+            id: "", firstname: "", secondname: "", lastname: "",
+            birth: new Date(),
+            country: "", gender: "", size: 0
+        }
+        store.dispatch({ type: "set-patient", patient })
+    },
     setPage(page: string) {
         store.dispatch({ type: "set-page", page })
     },

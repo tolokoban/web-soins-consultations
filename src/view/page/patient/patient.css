@@ -1,0 +1,28 @@
+div.view-page-Patient {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+div.view-page-Patient > header {
+    flex: 0 0 3rem;
+    padding: .5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.view-page-Patient > section {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: .5rem;
+}
+
+div.view-page-Patient > section > div {
+    width: 100%;
+}

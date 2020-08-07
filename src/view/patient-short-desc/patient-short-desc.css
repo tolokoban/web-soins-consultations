@@ -1,3 +1,16 @@
 div.view-PatientShortDesc > span {
     margin: 0 .25rem;
 }
+
+div.view-PatientShortDesc > span.lastname,
+div.view-PatientShortDesc > span.firstname {
+    font-weight: bolder;
+}
+
+div.view-PatientShortDesc > span.age {
+    padding: 0 1rem;
+}
+
+div.view-PatientShortDesc > span > em {
+    opacity: .5;
+}

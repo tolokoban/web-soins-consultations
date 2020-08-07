@@ -13,18 +13,22 @@ import * as serviceWorker from './serviceWorker'
 Tfw.Theme.register("soin", {
     white: "#fda", black: "#420",
     bg0: "#ffcb97", bg1: "#ffdab3", bg2: "#ffe6cc", bg3: "#fff3e6",
-    bgP: "#742", bgPL: "#953", bgPD: "#531",
+    bgP: "#804924", bgPL: "#b36633", bgPD: "#4d2c16",
     bgS: "#ff9f30", bgSD: "#ff7f00", bgSL: "#ffbf60"
 })
 Tfw.Theme.apply("soin")
 Tfw.Font.loadJosefin()
 
 async function start() {
-    const isInitialized = await Settings.initialize()
+    await Settings.initialize()
     const patients = await PatientService.getAllPatients()
+    console.info("patients=", patients)
     State.setPatients(patients)
     const structure = await StructureService.getFromRemote()
-    Settings.structure = structure || undefined
+    if (structure) {
+        // Update structure from network.
+        Settings.structure = structure
+    }
 
     ReactDOM.render(
         <Provider store={State.store}>

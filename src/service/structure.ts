@@ -3,7 +3,7 @@ import Parser from "../structure/parser"
 import Settings from '../settings'
 
 import {
-    IStructure, IPatientField, IFormField, ITypes
+    IStructure, IPatientField, IFormField, ITypes, IVaccins
 } from "../types"
 
 const Intl = Tfw.Intl
@@ -26,31 +26,38 @@ export default {
         const WebService = Tfw.WebService.create(
             Settings.remoteServer
         )
-        console.info("Settings.remoteServer=", Settings.remoteServer)
-        const structures: IStructureService[] =
-            await WebService.exec("structure.list", organizationId);
-        const structure = structures.find(
-            (structure: IStructureService) => structure.id === structureId
-        )
-        if (!structure) return null
-        console.info("structure=", structure)
-        return {
-            id: structure.id,
-            organizationId,
-            name: structure.name,
-            patientFields: parsePatient(structure.patient),
-            formFields: parseFormFields(structure),
-            //exams: parse(structure.exams),
-            //vaccins: parse(structure.vaccins),
-            forms: parse(structure.forms),
-            types: parse(structure.types) as ITypes,
-            sources: {
-                exams: structure.exams,
-                vaccins: structure.vaccins,
-                patient: structure.patient,
-                forms: structure.forms,
-                types: structure.types
+        try {
+            const structures: IStructureService[] =
+                await WebService.exec("structure.list", organizationId);
+            const structure = structures.find(
+                (structure: IStructureService) => structure.id === structureId
+            )
+            if (!structure) return null
+            console.info("structure=", structure)
+            const parsedStructure: IStructure = {
+                id: structure.id,
+                organizationId,
+                name: structure.name,
+                patientFields: parsePatient(structure.patient),
+                formFields: parseFormFields(structure),
+                //exams: parse(structure.exams),
+                //vaccins: parse(structure.vaccins),
+                forms: parse(structure.forms),
+                types: parse(structure.types) as ITypes,
+                vaccins: parseVaccins(structure.vaccins),
+                sources: {
+                    exams: structure.exams,
+                    vaccins: structure.vaccins,
+                    patient: structure.patient,
+                    forms: structure.forms,
+                    types: structure.types
+                }
             }
+            console.info("parsedStructure=", parsedStructure)
+            return parsedStructure
+        } catch (ex) {
+            console.error(ex)
+            return null
         }
     }
 }
@@ -65,6 +72,21 @@ function parse(def: string): { [key: string]: IFormField } {
         console.log(def)
         throw Error(ex)
     }
+}
+
+function parseVaccins(stringifiedVaccins: string): IVaccins {
+    const vaccins: IVaccins = {}
+    try {
+        const raw: { [key: string]: IFormField } =
+            Parser.parse(stringifiedVaccins)
+        for (const id of Object.keys(raw)) {
+            vaccins[id] = { caption: raw[id].caption }
+        }
+    }
+    catch (ex) {
+        console.error("[parsePatient] ", ex);
+    }
+    return vaccins
 }
 
 function parsePatient(stringifiedPatientDef: string): IPatientField[] {

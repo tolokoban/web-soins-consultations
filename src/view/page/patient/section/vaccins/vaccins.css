@@ -1,0 +1,17 @@
+div.view-page-patient-section-Vaccins div.vaccin {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 2rem;
+    margin: .25rem;
+    padding: 0 .5rem;
+    background: #aaa;
+}
+
+div.view-page-patient-section-Vaccins > div.vaccins {
+    display: grid;
+    grid-template: repeat(10, 1fr) / repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-gap: .5rem;
+}

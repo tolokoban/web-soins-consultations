@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { IAppState } from "../types"
+import State from '../state'
+import { IAppState, IPatientSummary } from "../types"
 import AppView from "./app"
 
 function mapStateToProps(state: IAppState) {
@@ -12,7 +13,13 @@ function mapStateToProps(state: IAppState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        // onClick: ...
+        onPatientChange(patientSummary: IPatientSummary) {
+            State.setPatient(patientSummary)
+        },
+        onPatientClick(patientSummary: IPatientSummary) {
+            State.setPatient(patientSummary)
+            State.setPage("patient")
+        }
     };
 }
 

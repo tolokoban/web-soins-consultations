@@ -4,10 +4,10 @@ div.view-PatientForm {
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-    max-width: 600px;
+    max-width: 40vw;
 }
 
 div.view-PatientForm > * {
     flex: 0 1 auto;
-    min-width: 160px;
+    min-width: calc(20vw - 2rem);
 }

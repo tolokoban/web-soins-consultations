@@ -20,14 +20,22 @@ export interface IPatient {
     created: number
     /** Seconds since Epoc. */
     edited: number
-    data: {
-        [key: string]: string | number | boolean
-    },
+    data: IRecord,
     admissions: IAdmission[]
-    vaccins: {}
+    vaccins: IVaccins
     exams: []
     picture: string | null
     attachments: []
+}
+
+export interface IVaccins {
+    [key: string]: IVaccin
+}
+
+export interface IVaccin {
+    caption: string
+    lot?: string
+    date?: number
 }
 
 export interface IPatientSummary {
@@ -81,6 +89,7 @@ export interface IStructure {
         [key: string]: IFormField
     },
     types: ITypes,
+    vaccins: IVaccins,
     sources: {
         exams: string
         vaccins: string

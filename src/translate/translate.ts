@@ -3,6 +3,7 @@ import Tfw from 'tfw'
 const _ = Tfw.Intl.make(require("./translate.json"))
 
 export default {
+    get back() { return _('back') },
     get birthday() { return _('birthday') },
     get cancel() { return _('cancel') },
     get close() { return _('close') },
@@ -12,6 +13,7 @@ export default {
     get country() { return _('country') },
     get dateMin() { return _('date-min') },
     get dateMax() { return _('date-max') },
+    get editPatient() { return _('edit-patient') },
     get executeQuery() { return _('execute-query') },
     get extractions() { return _('extractions') },
     get filter() { return _('filter') },
@@ -29,9 +31,11 @@ export default {
     get lastName() { return _('lastname') },
     get loading() { return _('loading') },
     get logout() { return _('logout') },
+    get newConsultation() { return _('new-consultation') },
     get patients() { return _('patients') },
     get patientsCount() { return _('patients-count') },
     get secondName() { return _('secondname') },
     get size() { return _('size') },
-    get struct() { return _('struct') }
+    get struct() { return _('struct') },
+    get vaccins() { return _('vaccins') }
 }

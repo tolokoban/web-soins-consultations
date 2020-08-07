@@ -38,7 +38,6 @@ export default class Text extends React.Component<ITextProps, ITextState> {
 
         const type = this.props.type
         const value = this.props.value
-        console.info("structure=", structure)
         const suggestions = getSuggestionsForType(structure, type)
 
         return <Input

@@ -5,9 +5,20 @@ div.view-page-ImportPatient {
     align-items: center;
 }
 
+div.view-page-ImportPatient p {
+    font-size: 150%;
+}
+
 div.view-page-ImportPatient > div.progress {
     padding: 10vw;
     width: 100%;
+    opacity: 1;
+}
+
+div.view-page-ImportPatient > div.progress.hide {
+    pointer-events: none;
+    filter: blur(4px);
+    transition: filter .5s;
 }
 
 div.view-page-ImportPatient > .back-button {
@@ -16,4 +27,9 @@ div.view-page-ImportPatient > .back-button {
 
 div.view-page-ImportPatient div.patient-desc {
     margin: 1rem 0;
+}
+
+div.view-page-ImportPatient big {
+    font-size: 200%;
+    font-weight: bolder;
 }

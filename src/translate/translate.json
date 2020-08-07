@@ -1,5 +1,6 @@
 {
     "fr": {
+        "back": "Retour",
         "birthday": "Date de naissance",
         "cancel": "Annuler",
         "close": "Fermer",
@@ -9,6 +10,7 @@
         "country": "Pays",
         "date-min": "Date de début",
         "date-max": "Date de fin",
+        "edit-patient": "Editer le Patient",
         "filter": "Filtre",
         "firstname": "Prénom",
         "gender": "Genre",
@@ -20,10 +22,12 @@
         "lastname": "Nom",
         "loading": "Chargement en cours...",
         "logout": "Déconnexion",
+        "new-consultation": "Nouvelle consultation",
         "patients": "Patients",
         "patients-count": "Nb Patients :",
         "secondname": "Second Prénom",
         "size": "Taille (cm)",
-        "struct": "Structure :"
+        "struct": "Structure :",
+        "vaccins": "Vaccins"
     }
 }

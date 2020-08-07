@@ -20,6 +20,8 @@ interface IPatientFormProps {
 interface IPatientFormState extends IPatientSummary { }
 
 export default class PatientForm extends React.Component<IPatientFormProps, IPatientFormState> {
+    private oldPatient?: IPatientSummary
+
     state = {
         id: "",
         lastname: "",
@@ -31,8 +33,20 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         birth: DateUtil.createUndefinedDate()
     }
 
-    private fireChange = () => {
+    private refresh = () => {
+        const { patient } = this.props
+        if (patient === this.oldPatient) return
+        this.oldPatient = patient
+        this.setState({ ...patient })
+    }
 
+    componentDidMount = this.refresh
+
+    componentDidUpdate = this.refresh
+
+    private fireChange = () => {
+        const { state } = this
+        this.props.onChange({ ...state })
     }
 
     private handleLastnameChange = (lastname: string) => {
@@ -66,6 +80,7 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
                 label={Translate.lastName}
                 transform={Tfw.Util.normalizeLastname}
                 wide={true}
+                focus={true}
                 value={lastname}
                 onChange={this.handleLastnameChange}
             />
