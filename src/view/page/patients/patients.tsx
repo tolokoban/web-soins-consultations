@@ -6,6 +6,7 @@ import Translate from '../../../translate'
 import { IPatientSummary } from "../../../types"
 import PatientSummaryButton from '../../patient-summary-button'
 import PatientsFilter from './patients-filter'
+import Package from '../../../../package.json'
 
 import "./patients.css"
 
@@ -98,7 +99,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                     label="Quitter"
                     onClick={() => process.exit(0)}
                 />
-                <div>WebSoins Consultations</div>
+                <div>WebSoins Consultations v{Package.version}</div>
                 <Button
                     label={Translate.importPatients}
                     small={true}

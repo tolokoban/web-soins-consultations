@@ -6,6 +6,7 @@ import {
 } from '../types'
 
 const INITIAL_STATE: IAppState = {
+    consultationId: "",
     page: "patients",
     patient: {
         id: "",
@@ -20,7 +21,7 @@ const INITIAL_STATE: IAppState = {
     patients: []
 }
 
-type IAction = IActionSetPage | IActionSetPatients | IActionSetPatient
+type IAction = IActionSetPage | IActionSetPatients | IActionSetPatient | IActionSetConsultationId
 
 interface IActionSetPage {
     type: "set-page",
@@ -37,6 +38,11 @@ interface IActionSetPatient {
     patient: IPatientSummary
 }
 
+interface IActionSetConsultationId {
+    type: "set-consultation-id",
+    consultationId: string
+}
+
 const store = createStore<IAppState, IAction, unknown, unknown>(reducer)
 
 function reducer(
@@ -44,6 +50,8 @@ function reducer(
     action: IAction
 ): IAppState {
     switch (action.type) {
+        case 'set-consultation-id':
+            return { ...state, consultationId: action.consultationId }
         case 'set-page':
             return { ...state, page: action.page }
         case 'set-patient':
@@ -64,6 +72,9 @@ export default {
             country: "", gender: "", size: 0
         }
         store.dispatch({ type: "set-patient", patient })
+    },
+    setConsultationId(uuid: string) {
+        store.dispatch({ type: "set-consultation-id", consultationId: uuid })
     },
     setPage(page: string) {
         store.dispatch({ type: "set-page", page })

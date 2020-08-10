@@ -1,6 +1,6 @@
 {
     "name": "web-soins-consultations",
-    "version": "0.2.0",
+    "version": "0.6.0",
     "private": true,
     "dependencies": {
         "@testing-library/jest-dom": "^4.2.4",
@@ -11,13 +11,15 @@
         "@types/react": "^16.9.36",
         "@types/react-dom": "^16.9.8",
         "@types/react-redux": "^7.1.9",
+        "@types/uuid": "^8.0.1",
         "nw-react-scripts": "3.4.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
         "redux": "^4.0.5",
         "tfw": "^0.35.6",
-        "typescript": "^3.7.5"
+        "typescript": "^3.7.5",
+        "uuid": "^8.3.0"
     },
     "scripts": {
         "postbuild": "cd build ; rm -rf web-soins-consultations/ ; find . -type f -exec sha256sum {} \\; > package.txt",

@@ -5,6 +5,7 @@ import AppView from "./app"
 
 function mapStateToProps(state: IAppState) {
     return {
+        consultationId: state.consultationId,
         page: state.page,
         patient: state.patient,
         patients: state.patients

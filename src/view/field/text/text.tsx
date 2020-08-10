@@ -14,6 +14,7 @@ interface ITextProps {
     label?: string
     wide?: boolean
     type: string
+    width?: string
     value: string
     onChange(value: string): void
 }
@@ -44,6 +45,7 @@ export default class Text extends React.Component<ITextProps, ITextState> {
             className={classes}
             label={this.props.label}
             wide={this.props.wide}
+            width={this.props.width}
             value={getTypeValue(structure, type ,value)}
             suggestions={suggestions}
             onChange={this.handleChange}

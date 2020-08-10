@@ -38,6 +38,11 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
     componentDidMount = this.refresh
     componentDidUpdate = this.refresh
 
+    private handleConsultationClick = (consultationId: string) => {
+        State.setConsultationId(consultationId)
+        State.setPage("consultation")
+    }
+
     private handleBack = () => {
         State.setPage("patients")
         State.clearPatient()
@@ -71,7 +76,10 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                 <TabStrip
                     headers={[Translate.consultations, Translate.vaccins]}
                 >
-                    <Consultations patient={this.state.patient} />
+                    <Consultations
+                        patient={this.state.patient}
+                        onConsultationClick={this.handleConsultationClick}
+                    />
                     <Vaccins patient={this.state.patient} />
                 </TabStrip>
             </section>

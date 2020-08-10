@@ -11,6 +11,7 @@ const Button = Tfw.View.Button
 interface IConsultationsProps {
     className?: string | string[]
     patient?: IPatient
+    onConsultationClick(consultationId: string): void
 }
 
 export default class Consultations extends React.Component<IConsultationsProps, {}> {
@@ -27,6 +28,7 @@ export default class Consultations extends React.Component<IConsultationsProps, 
             icon="edit" small={true} dark={true}
             className="consultation"
             key={consultation.enter}
+            onClick={() => this.props.onConsultationClick(consultation.uuid)}
         />
     }
 

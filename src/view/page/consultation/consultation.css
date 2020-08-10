@@ -1,0 +1,27 @@
+div.view-page-Consultation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+div.view-page-Consultation>header {
+    flex: 0 0 3rem;
+    padding: .5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.view-page-Consultation>header>div.date {
+    font-weight: bolder;
+    font-size: 115%;
+}
+
+div.view-page-Consultation>section {
+    padding: .5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+}

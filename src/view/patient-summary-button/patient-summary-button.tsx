@@ -6,7 +6,6 @@ import { IPatientSummary } from "../../types"
 import "./patient-summary-button.css"
 
 const Touchable = Tfw.View.Touchable
-const _ = Tfw.Intl.make(require("./patient-summary-button.json"))
 
 interface IPatientSummaryButtonProps {
     className?: string | string[]

@@ -8,9 +8,9 @@
  */
 
 
-import Tfw from 'tfw'
-import { IPatient, IPatientSummary, IRecord } from '../types'
+import { IPatient, IPatientSummary, IRecord, IConsultation } from '../types'
 import FileSystem from "./file-system"
+import PatientManager from '../manager/patient'
 import Structure from '../structure'
 import Guid from '../guid'
 
@@ -24,6 +24,7 @@ interface IPatientsFile {
 const ROOT_DIRECTORY = '.'
 const PATIENTS_FILENAME = `${ROOT_DIRECTORY}/patients.json`
 
+const PATIENTS = new Map<string, IPatient>()
 
 /**
  * @return A list of all the patients summaries.
@@ -54,7 +55,7 @@ async function getAllPatients(): Promise<IPatientSummary[]> {
         })
         return sortedList
             .map(item => item[2])
-            .map(recordToPatientSummary)
+            .map(PatientManager.getSummaryFromRecord)
     }
     catch (ex) {
         console.error(`Unable to load "${PATIENTS_FILENAME}"!`, ex)
@@ -70,9 +71,14 @@ function exists(id: string): boolean {
 
 async function getPatient(id: string, path = "."): Promise<IPatient> {
     try {
+        if (PATIENTS.has(id)) {
+            return PATIENTS.get(id) as IPatient
+        }
         const patientContent = await FileSystem.readText(
             `${path}/${id}/patient.json`)
         const patient = JSON.parse(patientContent) as IPatient
+        sanitizePatient(patient)
+        PATIENTS.set(id, patient)
         return patient
     }
     catch (ex) {
@@ -88,12 +94,19 @@ async function getPatient(id: string, path = "."): Promise<IPatient> {
  */
 async function setPatient(patient: IPatient): Promise<IPatient> {
     try {
-        const patientContent = JSON.stringify(patient)
+        const patientContent = JSON.stringify(sanitizePatient(patient))
         addUniqueIdIfMissing(patient)
         await FileSystem.writeText(`./${patient.id}/patient.json`, patientContent)
         const patientsFile = await loadPatientsFile()
         addPatientToPatientsFile(patient, patientsFile)
         await savePatientsFile(patientsFile)
+
+        const id = patient.id
+        if (PATIENTS.has(id)) {
+            PATIENTS.delete(id)
+        }
+        PATIENTS.set(id, patient)
+
         return patient
     }
     catch (ex) {
@@ -104,7 +117,7 @@ async function setPatient(patient: IPatient): Promise<IPatient> {
 
 
 function getSummary(patient: IPatient): IPatientSummary {
-    return recordToPatientSummary(patient.data)
+    return PatientManager.getSummary(patient)
 }
 
 
@@ -114,20 +127,6 @@ function getSummary(patient: IPatient): IPatientSummary {
 function addUniqueIdIfMissing(patient: IPatient) {
     if (typeof patient.id === 'string' && patient.id.length > 0) return
     patient.id = Guid.create()
-}
-
-
-function recordToPatientSummary(record: IRecord): IPatientSummary {
-    return {
-        id: record.id,
-        lastname: Tfw.Util.normalizeLastname(record["#PATIENT-LASTNAME"] || "?"),
-        firstname: Tfw.Util.normalizeFirstname(record["#PATIENT-FIRSTNAME"] || "?"),
-        secondname: Tfw.Util.normalizeFirstname(record["#PATIENT-SECONDNAME"] || ""),
-        gender: record["#PATIENT-GENDER"],
-        country: Structure.getValueCaption("#COUNTRY", record["#PATIENT-COUNTRY"]),
-        size: Tfw.Converter.Integer(record["#PATIENT-SIZE"], 0),
-        birth: new Date(1000 * Tfw.Converter.Integer(record["#PATIENT_BIRTH"], 0))
-    }
 }
 
 
@@ -155,4 +154,19 @@ function addPatientToPatientsFile(patient: IPatient, patientsFile: IPatientsFile
         ...patient.data,
         id: patient.id
     }
+}
+
+
+function sanitizePatient(patient: IPatient): IPatient {
+    for (const admission of patient.admissions) {
+        for (const consultation of admission.visits) {
+            if (
+                typeof consultation.uuid !== 'string'
+                || consultation.uuid.length === 0
+            ) {
+                consultation.uuid = Guid.create()
+            }
+        }
+    }
+    return patient
 }

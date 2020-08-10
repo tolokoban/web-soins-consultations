@@ -3,6 +3,7 @@ export * from './state/types'
 export interface IConsultation {
     /** Seconds since Epoc. */
     enter: number
+    uuid: string
     data: {
         [key: string]: string
     }

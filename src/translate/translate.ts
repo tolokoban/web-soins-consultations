@@ -8,6 +8,7 @@ export default {
     get cancel() { return _('cancel') },
     get close() { return _('close') },
     get code() { return _('code') },
+    get consultationDate() { return _('consultation-date') },
     get consultations() { return _('consultations') },
     get consultationsCount() { return _('consultations-count') },
     get country() { return _('country') },

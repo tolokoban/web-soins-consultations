@@ -2,6 +2,7 @@ import React from "react"
 import Tfw from 'tfw'
 
 import Splash from './splash'
+import PageConsultation from '../view/page/consultation'
 import PagePatient from '../view/page/patient'
 import PagePatients from '../view/page/patients'
 import PageImportPatients from '../view/page/import-patient'
@@ -14,6 +15,7 @@ const Stack = Tfw.Layout.Stack
 interface IAppProps {
     className?: string[]
     page: string
+    consultationId: string
     patient: IPatientSummary
     patients: IPatientSummary[]
     onPatientChange(patientSummary: IPatientSummary): void
@@ -49,6 +51,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 scrollable={true}
                 value={this.props.page}
             >
+                <PageConsultation
+                    key="consultation"
+                    consultationId={this.props.consultationId}
+                    patientSummary={this.props.patient}
+                />
                 <PagePatient
                     key="patient"
                     patientSummary={this.props.patient}

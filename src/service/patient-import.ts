@@ -1,6 +1,6 @@
-import Tfw from 'tfw'
 import FileSystem from './file-system'
 import PatientService from './patient'
+import PatientManager from '../manager/patient'
 import Structure from '../structure'
 import { IPatient, IPatientSummary, IRecord } from '../types'
 
@@ -43,25 +43,11 @@ export default class PatientImport {
         const keys = Object.keys(records)
         const key = keys[index]
         if (!key) throw Error(`Invalid patient index #${index}!`)
-        return recordToPatientSummary(records[key])
+        return PatientManager.getSummaryFromRecord(records[key])
     }
 
     async getPatient(key: string): Promise<IPatient> {
         const patient = await PatientService.getPatient(key, this.path)
         return patient
-    }
-}
-
-
-function recordToPatientSummary(record: IRecord): IPatientSummary {
-    return {
-        id: record.id,
-        lastname: Tfw.Util.normalizeLastname(record["#PATIENT-LASTNAME"] || "?"),
-        firstname: Tfw.Util.normalizeFirstname(record["#PATIENT-FIRSTNAME"] || "?"),
-        secondname: Tfw.Util.normalizeFirstname(record["#PATIENT-SECONDNAME"] || ""),
-        gender: record["#PATIENT-GENDER"],
-        country: Structure.getValueCaption("#COUNTRY", record["#PATIENT-COUNTRY"]),
-        size: Tfw.Converter.Integer(record["#PATIENT-SIZE"], 0),
-        birth: new Date(1000 * Tfw.Converter.Integer(record["#PATIENT_BIRTH"], 0))
     }
 }
