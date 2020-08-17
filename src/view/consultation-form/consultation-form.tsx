@@ -13,6 +13,9 @@ const Checkbox = Tfw.View.Checkbox
 interface IConsultationFormProps {
     className?: string | string[]
     patient: IPatient
+    // This object is mutable and will be modified by this component.
+    // It must be a copy of the original consultation because
+    // the editing can be cancelled.
     consultation: IConsultation
 }
 interface IConsultationFormState { }
@@ -53,7 +56,7 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
                 key={field.id}
                 label={field.caption}
                 value={false}
-                className="thm-ele-button"
+                className="thm-ele-button field"
             >
                 {this.renderFields(field.children)}
             </Expand>
@@ -63,16 +66,14 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         if (isBool(field)) {
             return <Checkbox
                 key={field.id}
+                wide={true}
                 label={field.caption}
                 value={this.getFieldValueAsBoolean(field)}
-                type={field.type || ""}
-                width="12rem"
-                onChange={(value: string) => this.updateField(field, value)}
+                onChange={(value: boolean) => this.updateBooleanField(field, value)}
             />
         }
 
-        console.info("field=", field, consultation)
-        return <TextField
+        return <div className="field"><TextField
             key={field.id}
             label={field.caption}
             value={this.getFieldValue(field)}
@@ -80,7 +81,7 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
             width="12rem"
             onChange={(value: string) => this.updateField(field, value)}
         >
-        </TextField>
+        </TextField></div>
     }
 
     private updateField = (field: IFormField, value: string) => {
@@ -89,7 +90,17 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         delete consultation.data[field.id]
         if (sanitizedValue.length > 0) {
             consultation.data[field.id] = sanitizedValue
+            console.info("consultation=", consultation)
         }
+    }
+
+    private updateBooleanField = (field: IFormField, value: boolean) => {
+        const { consultation } = this.props
+        delete consultation.data[field.id]
+        if (value) {
+            consultation.data[field.id] = "#YES"
+        }
+
     }
 
     render() {

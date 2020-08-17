@@ -71,18 +71,23 @@ export default {
             birth: new Date(),
             country: "", gender: "", size: 0
         }
-        store.dispatch({ type: "set-patient", patient })
+        dispatch({ type: "set-patient", patient })
     },
     setConsultationId(uuid: string) {
-        store.dispatch({ type: "set-consultation-id", consultationId: uuid })
+        dispatch({ type: "set-consultation-id", consultationId: uuid })
     },
     setPage(page: string) {
-        store.dispatch({ type: "set-page", page })
+        dispatch({ type: "set-page", page })
     },
     setPatient(patient: IPatientSummary) {
-        store.dispatch({ type: "set-patient", patient })
+        dispatch({ type: "set-patient", patient })
     },
     setPatients(patients: IPatientSummary[]) {
-        store.dispatch({ type: "set-patients", patients })
+        dispatch({ type: "set-patients", patients })
     }
+}
+
+function dispatch(param: IAction) {
+    console.trace("DISPATCH", param)
+    store.dispatch(param)
 }

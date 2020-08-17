@@ -39,6 +39,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
     componentDidUpdate = this.refresh
 
     private handleConsultationClick = (consultationId: string) => {
+        console.info("consultationId=", consultationId)
         State.setConsultationId(consultationId)
         State.setPage("consultation")
     }

@@ -71,14 +71,18 @@ function exists(id: string): boolean {
 
 async function getPatient(id: string, path = "."): Promise<IPatient> {
     try {
+        console.info("getPatient() id=", id)
         if (PATIENTS.has(id)) {
-            return PATIENTS.get(id) as IPatient
+            const cachedPatient = PATIENTS.get(id) as IPatient
+            console.log(`Found Patient #${id} in cache!`, cachedPatient)
+            return cachedPatient
         }
         const patientContent = await FileSystem.readText(
             `${path}/${id}/patient.json`)
         const patient = JSON.parse(patientContent) as IPatient
         sanitizePatient(patient)
         PATIENTS.set(id, patient)
+        console.log("Loaded patient: ", patient)
         return patient
     }
     catch (ex) {
@@ -165,6 +169,9 @@ function sanitizePatient(patient: IPatient): IPatient {
                 || consultation.uuid.length === 0
             ) {
                 consultation.uuid = Guid.create()
+            }
+            if (typeof consultation.version !== 'number') {
+                consultation.version = 1
             }
         }
     }

@@ -33,6 +33,7 @@ export default {
     get loading() { return _('loading') },
     get logout() { return _('logout') },
     get newConsultation() { return _('new-consultation') },
+    get ok() { return _('ok') },
     get patients() { return _('patients') },
     get patientsCount() { return _('patients-count') },
     get secondName() { return _('secondname') },

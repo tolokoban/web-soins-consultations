@@ -5,7 +5,9 @@ import { IPatient, IPatientSummary, IConsultation, IRecord } from '../types'
 export default {
     getConsultationFromUuid,
     getSummary,
-    getSummaryFromRecord
+    getSummaryFromRecord,
+    removeConsultation,
+    updateConsultation
 }
 
 function getConsultationFromUuid(patient: IPatient, consultationId: string): IConsultation | null {
@@ -54,4 +56,29 @@ function getSummaryFromRecord(record: IRecord): IPatientSummary {
         )
     }
     return summary
+}
+
+
+function updateConsultation(patient: IPatient, newConsultation: IConsultation): IPatient {
+    for (const admission of patient.admissions) {
+        for (const consultation of admission.visits) {
+            if (consultation.uuid !== newConsultation.uuid) continue
+            consultation.version = 1 + Math.max(
+                consultation.version, newConsultation.version)
+            consultation.enter = newConsultation.enter
+            consultation.data = { ...newConsultation.data }
+            return patient
+        }
+    }
+
+    return patient
+}
+
+function removeConsultation(patient: IPatient, consultationId: string): IPatient {
+    for (const admission of patient.admissions) {
+        admission.visits = admission.visits.filter(
+            consultation => consultation.uuid !== consultationId
+        )
+    }
+    return patient
 }

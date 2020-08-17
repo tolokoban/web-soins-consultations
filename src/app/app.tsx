@@ -6,7 +6,7 @@ import PageConsultation from '../view/page/consultation'
 import PagePatient from '../view/page/patient'
 import PagePatients from '../view/page/patients'
 import PageImportPatients from '../view/page/import-patient'
-import { IPatientSummary } from '../types'
+import { IPatientSummary, IPatient, IConsultation } from '../types'
 
 import "./app.css"
 
@@ -20,6 +20,7 @@ interface IAppProps {
     patients: IPatientSummary[]
     onPatientChange(patientSummary: IPatientSummary): void
     onPatientClick(patientSummary: IPatientSummary): void
+    onEndOfConsultationEdition(consultation: IConsultation | null, patient?: IPatient): void
 }
 interface IAppState { }
 
@@ -36,6 +37,10 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     handlePatientClick = (patientSummary: IPatientSummary) => {
         this.props.onPatientClick(patientSummary)
+    }
+
+    handleEndOfConsultationEdition = (consultation: IConsultation | null, patient?: IPatient) => {
+        this.props.onEndOfConsultationEdition(consultation, patient)
     }
 
     render() {
@@ -55,6 +60,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     key="consultation"
                     consultationId={this.props.consultationId}
                     patientSummary={this.props.patient}
+                    onBack={this.handleEndOfConsultationEdition}
                 />
                 <PagePatient
                     key="patient"

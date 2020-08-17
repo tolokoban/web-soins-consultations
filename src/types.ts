@@ -3,6 +3,11 @@ export * from './state/types'
 export interface IConsultation {
     /** Seconds since Epoc. */
     enter: number
+    /**
+     * Everytime you edit the values of a consultation,
+     * you must increment the "version".
+     */
+    version: number
     uuid: string
     data: {
         [key: string]: string

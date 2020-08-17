@@ -1,7 +1,9 @@
 import { connect } from 'react-redux'
 import State from '../state'
-import { IAppState, IPatientSummary } from "../types"
+import { IAppState, IPatientSummary, IPatient, IConsultation } from "../types"
 import AppView from "./app"
+import PatientManager from '../manager/patient'
+import PatientService from '../service/patient'
 
 function mapStateToProps(state: IAppState) {
     return {
@@ -19,6 +21,14 @@ function mapDispatchToProps(dispatch: any) {
         },
         onPatientClick(patientSummary: IPatientSummary) {
             State.setPatient(patientSummary)
+            State.setPage("patient")
+        },
+        async onEndOfConsultationEdition(consultation: IConsultation | null, patient?: IPatient) {
+            if (consultation && patient) {
+                // Save the consultation.
+                PatientManager.updateConsultation(patient, consultation)
+                await PatientService.setPatient(patient)
+            }
             State.setPage("patient")
         }
     };

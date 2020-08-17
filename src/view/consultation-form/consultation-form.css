@@ -1,3 +1,11 @@
 div.view-ConsultationForm {
     max-width: calc(100vw - 1rem);
 }
+
+div.view-ConsultationForm div.tfw-view-Expand.field > div.body {
+    padding: .25rem 0;
+}
+
+div.view-ConsultationForm div.tfw-view-Expand.field  {
+    background: #fff1;
+}

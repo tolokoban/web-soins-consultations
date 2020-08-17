@@ -49,7 +49,7 @@ export default class Consultations extends React.Component<IConsultationsProps, 
             <hr/>
             {
                 patient.admissions.length === 0 &&
-                <p>Ce-tte patient-e n'a jamais consulté ici.</p>
+                <p>Ce-tte patient-e n'a pas encore consulté ici.</p>
             }
             {
                 patient.admissions.map(this.renderAdmission)
