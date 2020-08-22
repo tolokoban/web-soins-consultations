@@ -1,7 +1,9 @@
 import React from "react"
 import Tfw from 'tfw'
+import DateUtil from '../../date-util'
 import Settings from '../../settings'
 import TextField from '../field/text'
+import PatientManager from '../../manager/patient'
 import { IPatient, IFormField, IFormFields, IConsultation } from "../../types"
 
 
@@ -73,15 +75,39 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
             />
         }
 
-        return <div className="field"><TextField
-            key={field.id}
-            label={field.caption}
-            value={this.getFieldValue(field)}
-            type={field.type || ""}
-            width="12rem"
-            onChange={(value: string) => this.updateField(field, value)}
-        >
-        </TextField></div>
+        const prevConsultations = PatientManager.getAllConsultationsBefore(
+            this.props.patient,
+            consultation.enter
+        )
+        if (field.id === '#REFERENCE') {
+            console.info("prevConsultations=", prevConsultations)
+            console.info("consultation=", consultation)
+        }
+        return <div className="field">
+            <TextField
+                key={field.id}
+                label={field.caption}
+                value={this.getFieldValue(field)}
+                type={field.type || ""}
+                width="15rem"
+                wide={false}
+                onChange={(value: string) => this.updateField(field, value)}
+            />
+            { prevConsultations.map(this.renderPrevConsultation.bind(this, field)) }
+        </div>
+    }
+
+    private renderPrevConsultation = (field: IFormField, consultation: IConsultation) => {
+        if (typeof consultation.data[field.id] === 'undefined') return <code>{ JSON.stringify(consultation.data[field.id]) }</code>
+        const value = this.getFieldValue(field)
+        return <div className="prev-field" key={`pc-${consultation.enter}`}>
+            <div className="date">{
+                DateUtil.formatDate(
+                    DateUtil.seconds2date(consultation.enter)
+                )
+            }</div>
+            <div className="value">{ value }</div>
+        </div>
     }
 
     private updateField = (field: IFormField, value: string) => {

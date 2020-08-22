@@ -6,7 +6,7 @@ export default {
     seconds2date
 }
 
-const UNDEFINED_DATE_TIME = -2206310961000
+const UNDEFINED_DATE_TIME = -30610224561000
 
 function isDefinedDate(date: any): date is Date {
     if (date instanceof Date) {

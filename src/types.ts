@@ -107,5 +107,5 @@ export interface IStructure {
 
 export interface IRecord {
     id: string,
-    [key: string]: string
+    [key: string]: string | number
 }

@@ -9,3 +9,14 @@ div.view-ConsultationForm div.tfw-view-Expand.field > div.body {
 div.view-ConsultationForm div.tfw-view-Expand.field  {
     background: #fff1;
 }
+
+div.view-ConsultationForm div.prev-field {
+    vertical-align: middle;
+    margin: 0 1rem;    
+    display: inline-flex;
+    flex-direction: column;
+}
+div.view-ConsultationForm div.prev-field > div.date {
+    font-size: 80%;
+    opacity: .5;
+}

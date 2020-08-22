@@ -22,7 +22,7 @@ div.view-page-Patients>section {
     align-items: flex-start;
 }
 
-div.view-page-Patients>section>div.patients-form {
+div.view-page-Patients>section div.patients-form {
     max-width: 40vw;
     padding: 1rem;
     margin: 1rem;
@@ -32,4 +32,24 @@ div.view-page-Patients>section>div.patients-form {
 div.view-page-Patients > section .list {
     min-width: 50vw;
     max-height: calc(100vh - 7rem);
+}
+
+div.view-page-Patients > section div.tfw-view-list.list > div.space {
+  background-size    : 100% 32px;
+  background-image   : url("./list-item.png");
+}
+
+div.view-page-Patients>section div.remote-server {
+    text-align: center;
+    opacity: 0.5;
+}
+
+div.view-page-Patients>section p {
+    transition: opacity 1s;
+    opacity: 0.7;
+}
+
+div.view-page-Patients>section p.hide {
+    transition: opacity 1s;
+    opacity: 0;
 }

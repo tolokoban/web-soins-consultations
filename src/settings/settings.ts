@@ -53,7 +53,11 @@ class Settings {
         }
     }
 
-    get remoteServer(): string { return this.data.remoteServer }
+    get remoteServer(): string {
+        return process.env.REACT_APP_WEBSOINS === 'DEV'
+            ? "http://localhost:7474/web-soins/"
+            : this.data.remoteServer
+    }
     set remoteServer(v: string) {
         this.data.remoteServer = v
         this.save()

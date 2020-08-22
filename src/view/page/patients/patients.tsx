@@ -6,7 +6,11 @@ import Translate from '../../../translate'
 import { IPatientSummary } from "../../../types"
 import PatientSummaryButton from '../../patient-summary-button'
 import PatientsFilter from './patients-filter'
+import PatientManager from '../../../manager/patient'
+import PatientService from '../../../service/patient'
 import Package from '../../../../package.json'
+import DateUtil from '../../../date-util'
+import Settings from '../../../settings'
 
 import "./patients.css"
 
@@ -79,6 +83,14 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
         this.props.onPatientClick(patientSummary)
     }
 
+    private handleAddNewPatient = async () => {
+        const patient = PatientManager.createPatientFromSummary(
+            this.props.patient
+        )
+        await PatientService.setPatient(patient)
+        this.props.onPatientClick(this.props.patient)
+    }
+
     render() {
         const { patientsFilter } = this
         if (!patientsFilter) return null
@@ -108,24 +120,35 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                 />
             </header>
             <section>
-                <div className="patients-form thm-bg2 thm-ele-button">
-                    <h1>Données démographiques du patient</h1>
-                    <PatientForm
-                        patient={patient}
-                        onChange={this.handlePatientChange}
-                    />
-                    <p>Si le <b>patient existe déjà</b> dans la colonne de droite,
-                    <b>cliquez dessus</b> pour voir ses anciennes consultations
-                    et éventuellement en ajouter une nouvelle.</p>
-                    <Button
-                        icon="add"
-                        wide={true}
-                        label="Ajouter un nouveau patient"
-                        warning={true}
-                    />
+                <div>
+                    <div className="patients-form thm-bg2 thm-ele-button">
+                        <h1>Données démographiques du patient</h1>
+                        <PatientForm
+                            patient={patient}
+                            onChange={this.handlePatientChange}
+                        />
+                        <p className={filteredPatients.length === 0 ? 'hide' : ''}>
+                            Si le <b>patient existe déjà</b> dans la colonne de droite,
+                            <b>cliquez dessus</b> pour voir ses anciennes consultations
+                            et éventuellement en ajouter une nouvelle.
+                        </p>
+                        <Button
+                            icon="add"
+                            wide={true}
+                            label="Ajouter un nouveau patient"
+                            enabled={canAddNewPatient(patient)}
+                            warning={true}
+                            onClick={this.handleAddNewPatient}
+                        />
+                    </div>
+                    <div className="remote-server">{
+                        Settings.remoteServer
+                    }</div>
                 </div>
                 <div className="patients-list">
-                    <h1>Patients ayant consulté: {filteredPatients.length}</h1>
+                    <h1>Patients correspondant au filtre: &nbsp;
+                        <big>{filteredPatients.length}</big>
+                        <small> / {this.props.patients.length}</small></h1>
                     <List
                         className="list"
                         itemHeight={32}
@@ -136,4 +159,14 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
             </section>
         </div>)
     }
+}
+
+function canAddNewPatient(patient: IPatientSummary): boolean {
+    if (patient.lastname.trim().length === 0) return false
+    if (patient.firstname.trim().length === 0) return false
+    if (patient.country.trim().length === 0) return false
+    // We cannot add the patient if he/she is born in 1000 or before.
+    if (!DateUtil.isDefinedDate(patient.birth)) return false
+
+    return true
 }

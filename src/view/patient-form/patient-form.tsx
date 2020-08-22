@@ -61,8 +61,21 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         this.setState({ secondname }, this.fireChange)
     }
 
+    private handleCountryChange = (country: string) => {
+        this.setState({ country }, this.fireChange)
+    }
+
+    private handleGenderChange = (gender: string) => {
+        this.setState({ gender }, this.fireChange)
+    }
+
     private handleSizeChange = (size: number) => {
         this.setState({ size }, this.fireChange)
+    }
+
+    private handleBirthChange = (birthTime: number) => {
+        // "birth" is the number of ms since Epoc.
+        this.setState({ birth: new Date(birthTime) }, this.fireChange)
     }
 
     render() {
@@ -103,19 +116,19 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
                 wide={true}
                 type="#GENDER"
                 value={gender}
-                onChange={gender => this.setState({ gender })}
+                onChange={this.handleGenderChange}
             />
             <InputDate
                 label={Translate.birthday}
                 value={birth.getTime()}
-                onChange={time => this.setState({ birth: new Date(time) })}
+                onChange={this.handleBirthChange}
             />
             <TextField
                 label={Translate.country}
                 wide={true}
                 type="#COUNTRY"
                 value={""}
-                onChange={country => { console.info("country=", country) }}
+                onChange={this.handleCountryChange}
             />
             <InputInteger
                 label={Translate.size}

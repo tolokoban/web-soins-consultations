@@ -20,6 +20,15 @@ Tfw.Theme.apply("soin")
 Tfw.Font.loadJosefin()
 
 async function start() {
+    window.addEventListener("keyup", (evt) => {
+        if (evt.key === "F11") {
+            evt.preventDefault()
+            //const nw = window['nw'] as any
+            const win = nw.Window.get()
+            win.toggleFullscreen()
+        }
+    }, true)
+    console.info("process.env=", process.env)
     await Settings.initialize()
     const patients = await PatientService.getAllPatients()
     console.info("patients=", patients)
