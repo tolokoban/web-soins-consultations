@@ -4,6 +4,7 @@ import DateUtil from '../../date-util'
 import Settings from '../../settings'
 import TextField from '../field/text'
 import PatientManager from '../../manager/patient'
+import StructureManager from '../../manager/structure'
 import { IPatient, IFormField, IFormFields, IConsultation } from "../../types"
 
 
@@ -25,12 +26,13 @@ interface IConsultationFormState { }
 export default class ConsultationForm extends React.Component<IConsultationFormProps, IConsultationFormState> {
     state = {}
 
-    private getFieldValue(field: IFormField): string {
-        const { consultation } = this.props
+    private getFieldValue(field: IFormField, overrideConsultation: IConsultation | null = null): string {
+        const consultation = overrideConsultation || this.props.consultation
         if (!consultation) return ""
         const { data } = consultation
         if (!data) return ""
-        return data[field.id] || ""
+        if (!data[field.id]) return ""
+        return StructureManager.getValueCaption(field.type, data[field.id])
     }
 
     private getFieldValueAsBoolean(field: IFormField): boolean {
@@ -97,9 +99,15 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         </div>
     }
 
+    /**
+     * We want to show the values of previous consultations as well.
+     */
     private renderPrevConsultation = (field: IFormField, consultation: IConsultation) => {
-        if (typeof consultation.data[field.id] === 'undefined') return <code>{ JSON.stringify(consultation.data[field.id]) }</code>
-        const value = this.getFieldValue(field)
+        if (typeof consultation.data[field.id] === 'undefined') {
+            // This field does not exist.
+            return null
+        }
+        const value = this.getFieldValue(field, consultation)
         return <div className="prev-field" key={`pc-${consultation.enter}`}>
             <div className="date">{
                 DateUtil.formatDate(

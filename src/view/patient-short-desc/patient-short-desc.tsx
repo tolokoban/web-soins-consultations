@@ -1,7 +1,6 @@
 import React from "react"
 import Tfw from 'tfw'
 import Settings from '../../settings'
-import Structure from '../../structure'
 import DateUtil from '../../date-util'
 import { IPatientSummary } from "../../types"
 

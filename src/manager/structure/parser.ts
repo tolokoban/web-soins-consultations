@@ -1,5 +1,5 @@
 import Tfw from 'tfw'
-import { IFormField } from '../types'
+import { IFormField } from '../../types'
 
 const _ = Tfw.Intl.make(require("./parser.json"));
 

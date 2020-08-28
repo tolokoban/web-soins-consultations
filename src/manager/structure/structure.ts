@@ -1,6 +1,6 @@
 import Tfw from 'tfw'
-import Settings from '../settings'
-import { IStructure, IPatientField } from "../types"
+import Settings from '../../settings'
+import { IStructure, IPatientField } from "../../types"
 
 const Intl = Tfw.Intl
 
@@ -48,17 +48,21 @@ function getFieldCaption(fieldKey: string): string {
     return Intl.toText(item.caption);
 }
 
-function getValueCaption(typeKey: string, valueKey: string): string {
+function getValueCaption(typeKey: string | undefined, valueKey: string): string {
+    if (!typeKey) {
+        // If no type, return the value as is.
+        return valueKey
+    }
     const structure = getCurrentStructure()
     const types = structure.types
     const type = types[typeKey]
     if (!type) return valueKey
-    const normalizedValue = valueKey.trim().toLowerCase()
+
     for (const subType of Object.values(type.children)) {
         const caption = subType.caption
         if (!caption) continue
-        if (caption.toLowerCase() === normalizedValue) {
-            return subType.id
+        if (subType.id === valueKey) {
+            return subType.caption || valueKey
         }
     }
     return valueKey

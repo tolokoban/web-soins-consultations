@@ -1,6 +1,6 @@
 import React from "react"
 import Tfw from 'tfw'
-import Structure from '../../../structure'
+import StructureManager from '../../../manager/structure'
 import Settings from '../../../settings'
 import { IStructure } from "../../../types"
 
@@ -46,7 +46,7 @@ export default class Text extends React.Component<ITextProps, ITextState> {
             label={this.props.label}
             wide={this.props.wide}
             width={this.props.width}
-            value={getTypeValue(structure, type ,value)}
+            value={StructureManager.getValueCaption(type ,value)}
             suggestions={suggestions}
             onChange={this.handleChange}
         />
@@ -82,18 +82,4 @@ function getTypeKey(
         }
     }
     return value
-}
-
-
-function getTypeValue(
-    structure: IStructure,
-    typeName: string,
-    key: string
-): string {
-    const types = structure.types
-    const type = types[typeName]
-    if (!type) return key
-    const value = type.children[key]
-    if (!value) return key
-    return value.caption || key
 }

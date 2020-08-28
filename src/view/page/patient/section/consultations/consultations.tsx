@@ -12,6 +12,7 @@ interface IConsultationsProps {
     className?: string | string[]
     patient?: IPatient
     onConsultationClick(consultationId: string): void
+    onNewConsultationClick(): void
 }
 
 export default class Consultations extends React.Component<IConsultationsProps, {}> {
@@ -45,6 +46,7 @@ export default class Consultations extends React.Component<IConsultationsProps, 
             <Button
                 icon="add"
                 label={Translate.newConsultation}
+                onClick={() => this.props.onNewConsultationClick()}
             />
             <hr/>
             {

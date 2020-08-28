@@ -1,7 +1,6 @@
 import FileSystem from './file-system'
 import PatientService from './patient'
 import PatientManager from '../manager/patient'
-import Structure from '../structure'
 import { IPatient, IPatientSummary, IRecord } from '../types'
 
 export default class PatientImport {

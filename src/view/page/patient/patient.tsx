@@ -6,7 +6,9 @@ import PatientShortDesc from '../../patient-short-desc'
 import PatientService from '../../../service/patient'
 import Consultations from './section/consultations'
 import Vaccins from './section/vaccins'
-import { IPatientSummary, IPatient } from "../../../types"
+import Guid from '../../../guid'
+import DateUtil from '../../../date-util'
+import { IPatientSummary, IPatient, IConsultation, IAdmission } from "../../../types"
 
 
 import "./patient.css"
@@ -24,7 +26,7 @@ interface IPatientState {
 
 export default class Patient extends React.Component<IPatientProps, IPatientState> {
     private oldPatientId = ""
-    state = { patient: undefined }
+    state: IPatientState = {}
 
     private refresh = async () => {
         const { patientSummary } = this.props
@@ -42,6 +44,30 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
         console.info("consultationId=", consultationId)
         State.setConsultationId(consultationId)
         State.setPage("consultation")
+    }
+
+    private handleNewConsultationClick = async () => {
+        const { patient } = this.state
+        if (!patient) return
+        const consultation: IConsultation = {
+            enter: DateUtil.date2seconds(new Date()),
+            uuid: Guid.create(),
+            version: 0,
+            data: {}
+        }
+        if (patient.admissions.length === 0) {
+            // No admission yet. Let's create one.
+            patient.admissions.push({
+                enter: consultation.enter,
+                visits: []
+            })
+        }
+        const lastAdmission: IAdmission = patient.admissions[patient.admissions.length - 1]
+        lastAdmission.visits.push(consultation)
+        await PatientService.setPatient(patient)
+        this.setState({
+            patient: { ...patient }
+        }, () => this.handleConsultationClick(consultation.uuid))
     }
 
     private handleBack = () => {
@@ -80,6 +106,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     <Consultations
                         patient={this.state.patient}
                         onConsultationClick={this.handleConsultationClick}
+                        onNewConsultationClick={this.handleNewConsultationClick}
                     />
                     <Vaccins patient={this.state.patient} />
                 </TabStrip>

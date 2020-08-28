@@ -1,3 +1,8 @@
+/**
+ * You can enhance this type for all the NWjs SDK.
+ * Get the doc here:
+ * https://nwjs.readthedocs.io/en/latest/
+ */
 
 declare const nw: {
     App: {},

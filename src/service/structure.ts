@@ -1,5 +1,5 @@
 import Tfw from 'tfw'
-import Parser from "../structure/parser"
+import Parser from "../manager/structure/parser"
 import Settings from '../settings'
 
 import {

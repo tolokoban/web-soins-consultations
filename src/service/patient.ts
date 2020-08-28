@@ -11,7 +11,6 @@
 import { IPatient, IPatientSummary, IRecord, IConsultation } from '../types'
 import FileSystem from "./file-system"
 import PatientManager from '../manager/patient'
-import Structure from '../structure'
 import Guid from '../guid'
 
 export default { getAllPatients, getPatient, getSummary, exists, setPatient }
