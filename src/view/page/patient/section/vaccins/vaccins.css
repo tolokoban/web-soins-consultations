@@ -9,6 +9,24 @@ div.view-page-patient-section-Vaccins div.vaccin {
     background: #aaa;
 }
 
+div.view-page-patient-section-Vaccins div.vaccin.good {
+    background: #7f7;
+}
+
+div.view-page-patient-section-Vaccins div.vaccin.warning {
+    background: #fe7;
+}
+
+div.view-page-patient-section-Vaccins div.vaccin.bad {
+    background: #f77;
+    color: #fff;
+}
+
+div.view-page-patient-section-Vaccins div.vaccin > div.date {
+    font-size: 80%;
+    opacity: 0.6;
+}
+
 div.view-page-patient-section-Vaccins > div.vaccins {
     display: grid;
     grid-template: repeat(10, 1fr) / repeat(3, 1fr);

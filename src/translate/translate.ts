@@ -39,5 +39,7 @@ export default {
     get secondName() { return _('secondname') },
     get size() { return _('size') },
     get struct() { return _('struct') },
+    get vaccinDate() { return _('vaccin-date') },
+    get vaccinLot() { return _('vaccin-lot') },
     get vaccins() { return _('vaccins') }
 }

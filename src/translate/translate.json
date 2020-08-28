@@ -30,6 +30,8 @@
         "secondname": "Second Prénom",
         "size": "Taille (cm)",
         "struct": "Structure :",
+        "vaccin-date": "Date du dernier vaccin",
+        "vaccin-lot": "Numéro de lot",
         "vaccins": "Vaccins"
     }
 }

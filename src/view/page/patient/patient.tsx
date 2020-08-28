@@ -8,7 +8,9 @@ import Consultations from './section/consultations'
 import Vaccins from './section/vaccins'
 import Guid from '../../../guid'
 import DateUtil from '../../../date-util'
-import { IPatientSummary, IPatient, IConsultation, IAdmission } from "../../../types"
+import {
+    IPatientSummary, IPatient, IConsultation, IAdmission, IVaccin
+} from "../../../types"
 
 
 import "./patient.css"
@@ -70,6 +72,16 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
         }, () => this.handleConsultationClick(consultation.uuid))
     }
 
+    private handleUpdateVaccin = async (id: string, vaccin: IVaccin) => {
+        console.info("handleUpdateVaccin()  ", id, vaccin)
+        const { patient } = this.state
+        if (!patient) return
+        patient.vaccins[id] = vaccin
+        console.info("patient=", patient)
+        await PatientService.setPatient(patient)
+        this.setState({ patient: { ...patient } })
+    }
+
     private handleBack = () => {
         State.setPage("patients")
         State.clearPatient()
@@ -108,7 +120,10 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                         onConsultationClick={this.handleConsultationClick}
                         onNewConsultationClick={this.handleNewConsultationClick}
                     />
-                    <Vaccins patient={this.state.patient} />
+                    <Vaccins
+                        patient={this.state.patient}
+                        onUpdateVaccin={this.handleUpdateVaccin}
+                    />
                 </TabStrip>
             </section>
         </div>)
