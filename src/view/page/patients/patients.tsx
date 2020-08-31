@@ -96,7 +96,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                 resolve()
             })
         )
-        this.props.onPatientClick(this.props.patient)
+        this.props.onPatientClick(PatientManager.getSummary(patient))
     }
 
     render() {
