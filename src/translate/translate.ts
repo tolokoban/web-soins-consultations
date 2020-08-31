@@ -3,6 +3,7 @@ import Tfw from 'tfw'
 const _ = Tfw.Intl.make(require("./translate.json"))
 
 export default {
+    get addPatient() { return _('add-patient') },
     get back() { return _('back') },
     get birthday() { return _('birthday') },
     get cancel() { return _('cancel') },

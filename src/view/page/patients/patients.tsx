@@ -87,7 +87,15 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
         const patient = PatientManager.createPatientFromSummary(
             this.props.patient
         )
-        await PatientService.setPatient(patient)
+        await Tfw.Factory.Dialog.wait(
+            Translate.addPatient,
+            new Promise(async (resolve) => {
+                await PatientService.setPatient(patient)
+                const patientSummaries = await PatientService.getAllPatients()
+                State.setPatients(patientSummaries)
+                resolve()
+            })
+        )
         this.props.onPatientClick(this.props.patient)
     }
 
@@ -135,7 +143,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                         <Button
                             icon="add"
                             wide={true}
-                            label="Ajouter un nouveau patient"
+                            label={Translate.addPatient}
                             enabled={canAddNewPatient(patient)}
                             warning={true}
                             onClick={this.handleAddNewPatient}
