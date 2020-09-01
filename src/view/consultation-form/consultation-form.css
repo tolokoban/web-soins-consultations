@@ -2,21 +2,37 @@ div.view-ConsultationForm {
     max-width: calc(100vw - 1rem);
 }
 
+div.view-ConsultationForm button.tfw-view-Checkbox.custom {
+    min-width: 10rem;
+}
+
 div.view-ConsultationForm div.tfw-view-Expand.field > div.body {
     padding: .25rem 0;
 }
 
-div.view-ConsultationForm div.tfw-view-Expand.field  {
+div.view-ConsultationForm div.tfw-view-Expand  {
     background: #fff1;
 }
 
+div.view-ConsultationForm div.field  {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    min-height: 2rem;
+}
+
 div.view-ConsultationForm div.prev-field {
-    vertical-align: middle;
-    margin: 0 1rem;    
+    vertical-align: bottom;
+    margin: 0 1rem;
     display: inline-flex;
     flex-direction: column;
 }
 div.view-ConsultationForm div.prev-field > div.date {
     font-size: 80%;
     opacity: .5;
+}
+div.view-ConsultationForm div.prev-field > div.value {
+    font-size: 80%;
 }

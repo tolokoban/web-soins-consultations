@@ -15,21 +15,18 @@ interface IVaccinFormProps {
     // Seconds since EPOC.
     date: number
     lot: string
-    onChange(date: number, lot: string): void
+    onDateChange(date: number): void
+    onLotChange(lot: string): void
 }
 
 export default class VaccinForm extends React.Component<IVaccinFormProps, {}> {
     private handleLotChange = (lot: string) => {
-        this.props.onChange(
-            this.props.date,
-            lot
-        )
+        this.props.onLotChange(lot)
     }
 
     private handleDateChange = (date: number) => {
-        this.props.onChange(
-            DateUtil.date2seconds(new Date(date)),
-            this.props.lot
+        this.props.onDateChange(
+            DateUtil.date2seconds(new Date(date))
         )
     }
 

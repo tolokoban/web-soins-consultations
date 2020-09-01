@@ -1,14 +1,15 @@
 import Parser from "./parser"
 
 describe("structure/parser", () => {
-    const cases = [
+    const cases: Array<[string, {}]> = [
         [
             "* #PATIENT-NAME Nom du patient",
             {
                 "#PATIENT-NAME": {
                     id: "#PATIENT-NAME",
                     children: {},
-                    caption: "Nom du patient"
+                    caption: "Nom du patient",
+                    tags: []
                 }
             }
         ],
@@ -19,7 +20,8 @@ describe("structure/parser", () => {
                     id: "#PATIENT-GENDER",
                     children: {},
                     caption: "Sexe",
-                    type: "#GENDER"
+                    type: "#GENDER",
+                    tags: []
                 }
             }
         ],
@@ -34,11 +36,12 @@ describe("structure/parser", () => {
                 }
             }
         ]
-    ];
-    cases.forEach(([input, expected]) => {
+    ]
+    for (const testCase of cases) {
+        const [input, expected] = testCase
         it(`should parse this single line "${input}"`, () => {
             const output = Parser.parse(input);
             expect(output).toEqual(expected);
         })
-    })
+    }
 });

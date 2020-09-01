@@ -79,10 +79,13 @@ export default class Vaccins extends React.Component<IVaccinsProps, IVaccinsStat
         if (!patient) return null
         const vaccin: IVaccin = patient.vaccins[id] || {
             caption: this.getVaccinCaption(id),
-            date: DateUtil.date2seconds(new Date()),
             lot: ""
         }
         if (!vaccin) return
+        if (typeof vaccin.date === 'undefined') {
+            vaccin.date = DateUtil.date2seconds(new Date())
+        }
+        console.info("vaccin=", vaccin)
 
         const currentVaccin: IVaccin = {
             ...vaccin
@@ -92,8 +95,10 @@ export default class Vaccins extends React.Component<IVaccinsProps, IVaccinsStat
             <VaccinForm
                 date={currentVaccin.date || DateUtil.date2seconds(DateUtil.createUndefinedDate())}
                 lot={currentVaccin.lot || ""}
-                onChange={(date: number, lot: string) => {
+                onDateChange={(date: number) => {
                     currentVaccin.date = date
+                }}
+                onLotChange={(lot: string) => {
                     currentVaccin.lot = lot
                 }}
             />
@@ -122,6 +127,11 @@ export default class Vaccins extends React.Component<IVaccinsProps, IVaccinsStat
                 }}
             >{vaccinIds.map(this.renderVaccin)}</div>
             <p>Cliquez sur un vaccin pour changer sa date.</p>
+            <ul>
+                <li>Le <span className="bad">rouge</span> signifie que le vaccin a <b>plus de 10 ans</b>.</li>
+                <li>Le <span className="warning">orange</span> signifie que le vaccin a <b>entre 5 et 10 ans</b>.</li>
+                <li>Le <span className="good">vert</span> signifie que le vaccin a <b>moins de 5 ans</b>.</li>
+            </ul>
         </div>)
     }
 }

@@ -12,3 +12,16 @@ div.App {
     margin: 0;
     padding: 0;
 }
+
+div.App fieldset {
+    background: var(--thm-bg2);
+    border: 1px solid var(--thm-black-7);
+}
+
+div.App fieldset > legend {
+    background: var(--thm-bgPD);
+    color: var(--thm-white);
+    padding: .25em .5em;
+    border-radius: 100vw;
+    border: 1px solid var(--thm-black-7);
+}

@@ -12,6 +12,7 @@ import "./consultation-form.css"
 
 const Expand = Tfw.View.Expand
 const Checkbox = Tfw.View.Checkbox
+const InputDate = Tfw.View.InputDate
 
 interface IConsultationFormProps {
     className?: string | string[]
@@ -44,6 +45,14 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         ) !== "#FALSE"
     }
 
+    /**
+     * @return number of milliseconds since Epoc.
+     */
+    private getFieldValueAsDate(field: IFormField): number {
+        const value = this.getFieldValue(field)
+        return s2ms(Tfw.Converter.Integer(value))
+    }
+
     private renderFields(fields: IFormFields) {
         return Object.keys(fields).map(
             name => {
@@ -60,31 +69,46 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
                 key={field.id}
                 label={field.caption}
                 value={false}
-                className="thm-ele-button field"
+                className="thm-ele-button"
             >
                 {this.renderFields(field.children)}
             </Expand>
         }
 
         const { consultation } = this.props
-        if (isBool(field)) {
-            return <Checkbox
-                key={field.id}
-                wide={true}
-                label={field.caption}
-                value={this.getFieldValueAsBoolean(field)}
-                onChange={(value: boolean) => this.updateBooleanField(field, value)}
-            />
-        }
-
         const prevConsultations = PatientManager.getAllConsultationsBefore(
             this.props.patient,
             consultation.enter
         )
-        if (field.id === '#REFERENCE') {
-            console.info("prevConsultations=", prevConsultations)
-            console.info("consultation=", consultation)
+
+        if (isBool(field)) {
+            return <div className="field">
+                <Checkbox
+                    key={field.id}
+                    wide={false}
+                    label={field.caption}
+                    value={this.getFieldValueAsBoolean(field)}
+                    onChange={(value: boolean) => this.updateBooleanField(field, value)}
+                />
+                {prevConsultations.map(this.renderPrevConsultation.bind(this, field))}
+            </div>
         }
+
+        if (field.tags.indexOf("DATE") > -1) {
+            return <div className="field">
+                <InputDate
+                    key={field.id}
+                    label={field.caption}
+                    value={this.getFieldValueAsDate(field)}
+                    wide={false}
+                    onChange={
+                        (value: number) => this.updateField(field, `${ms2s(value)}`)
+                    }
+                />
+                {prevConsultations.map(this.renderPrevConsultation.bind(this, field))}
+            </div>
+        }
+
         return <div className="field">
             <TextField
                 key={field.id}
@@ -95,7 +119,7 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
                 wide={false}
                 onChange={(value: string) => this.updateField(field, value)}
             />
-            { prevConsultations.map(this.renderPrevConsultation.bind(this, field)) }
+            {prevConsultations.map(this.renderPrevConsultation.bind(this, field))}
         </div>
     }
 
@@ -114,7 +138,7 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
                     DateUtil.seconds2date(consultation.enter)
                 )
             }</div>
-            <div className="value">{ value }</div>
+            <div className="value">{value}</div>
         </div>
     }
 
@@ -170,4 +194,14 @@ function isBool(field: IFormField): boolean {
         if (tag.trim().toUpperCase() === "BOOL") return true
     }
     return false
+}
+
+function ms2s(milliseconds: number): number {
+    const COEFF = 0.001
+    return milliseconds * COEFF
+}
+
+function s2ms(seconds: number): number {
+    const COEFF = 1000
+    return seconds * COEFF
 }

@@ -20,7 +20,7 @@ const List = Tfw.View.List
 const FILTER_DEBOUNCING = 350
 
 interface IPatientsProps {
-    className?: string[]
+    className?: string
     patient: IPatientSummary
     patients: IPatientSummary[]
     onPatientChange(patient: IPatientSummary): void
@@ -31,29 +31,28 @@ interface IPatientsState {
 }
 
 export default class Patients extends React.Component<IPatientsProps, IPatientsState> {
-    private oldPatients?: IPatientSummary[]
+    private oldPatient = ""
+    private oldPatients = ""
     private patientsFilter?: PatientsFilter
 
     state = {
         filteredPatients: this.props.patients
     }
 
-    componentDidMount() {
-        this.refreshPatientsFilter()
-    }
-
-    componentDidUpdate() {
-        this.refreshPatientsFilter()
-    }
-
     private refreshPatientsFilter() {
-        const { patients } = this.props
-        if (patients !== this.oldPatients) {
-            this.oldPatients = patients
+        const { patient, patients } = this.props
+        const newPatient = JSON.stringify(patient)
+        const newPatients = JSON.stringify(patients)
+        if (this.oldPatient !== newPatient || this.oldPatients !== newPatients) {
+            this.oldPatient = newPatient
+            this.oldPatients = newPatients
             this.patientsFilter = new PatientsFilter(patients)
+            this.filter()
         }
-        this.filter()
     }
+
+    componentDidMount = this.refreshPatientsFilter
+    componentDidUpdate = this.refreshPatientsFilter
 
     private filter = Tfw.Async.Debouncer(() => {
         const { patientsFilter } = this
@@ -132,7 +131,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                     <div className="patients-form thm-bg2 thm-ele-button">
                         <h1>Données démographiques du patient</h1>
                         <PatientForm
-                            patient={patient}
+                            patientSummary={patient}
                             onChange={this.handlePatientChange}
                         />
                         <p className={filteredPatients.length === 0 ? 'hide' : ''}>

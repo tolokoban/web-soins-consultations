@@ -13,7 +13,11 @@ import FileSystem from "./file-system"
 import PatientManager from '../manager/patient'
 import Guid from '../guid'
 
-export default { getAllPatients, getPatient, getSummary, exists, setPatient }
+export default {
+    deletePatient,
+    getAllPatients, getPatient, getSummary,
+    exists, setPatient
+}
 
 interface IPatientsFile {
     count: number,
@@ -119,13 +123,30 @@ async function setPatient(patient: IPatient): Promise<IPatient> {
 }
 
 
+async function deletePatient(patientId: string) {
+    try {
+        const patientsFile = await loadPatientsFile()
+        removePatientFromPatientsFile(patientId, patientsFile)
+        await savePatientsFile(patientsFile)
+        await FileSystem.deleteFolder(`./${patientId}`)
+        if (PATIENTS.has(patientId)) {
+            PATIENTS.delete(patientId)
+        }
+    }
+    catch (ex) {
+        console.error(`Unable to delete patient #${patientId}!`, ex)
+        throw ex
+    }
+}
+
+
 function getSummary(patient: IPatient): IPatientSummary {
     return PatientManager.getSummary(patient)
 }
 
 
 /**
- * If ".id" is missing, create a new unique one.
+ * If "patient.id" is missing, create a new unique one.
  */
 function addUniqueIdIfMissing(patient: IPatient) {
     if (typeof patient.id === 'string' && patient.id.length > 0) return
@@ -157,6 +178,11 @@ function addPatientToPatientsFile(patient: IPatient, patientsFile: IPatientsFile
         ...patient.data,
         id: patient.id
     }
+}
+
+
+function removePatientFromPatientsFile(patientId: string, patientsFile: IPatientsFile) {
+    delete patientsFile.records[patientId]
 }
 
 

@@ -75,6 +75,18 @@ interface IFormFieldWithPath extends IFormField {
 
 const RX_LINE = /^(#[A-Z0-9-]+)?([^\(@]*)(\([^\)]*\)\+?)?(@[A-Z0-9,-]+)?/;
 
+/**
+ * If there is an error, silents it and return `{}`.
+ */
+function parseLazy(code: string): { [key: string]: IFormField } {
+    try {
+        return parse(code)
+    } catch (ex) {
+        console.error(ex)
+        return {}
+    }
+}
+
 function parse(code: string): { [key: string]: IFormField } {
     const types: { [key: string]: IFormField } = {};
     const levels = [types];
@@ -223,4 +235,4 @@ function recursiveFlattenFormsFields(
 }
 
 
-export default { parse, flattenFormsFields }
+export default { parse, parseLazy, flattenFormsFields }

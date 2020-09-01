@@ -13,16 +13,16 @@ const InputInteger = Tfw.View.InputInteger
 
 interface IPatientFormProps {
     className?: string | string[]
-    patient: IPatientSummary
-    onChange(patient: IPatientSummary): void
+    patientSummary: IPatientSummary
+    onChange(patientSummary: IPatientSummary): void
 
 }
 interface IPatientFormState extends IPatientSummary { }
 
 export default class PatientForm extends React.Component<IPatientFormProps, IPatientFormState> {
-    private oldPatient?: IPatientSummary
+    private oldPatientSummary = ""
 
-    state = {
+    state: IPatientFormState = {
         id: "",
         lastname: "",
         firstname: "",
@@ -34,10 +34,12 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
     }
 
     private refresh = () => {
-        const { patient } = this.props
-        if (patient === this.oldPatient) return
-        this.oldPatient = patient
-        this.setState({ ...patient })
+        const { patientSummary } = this.props
+        const newPatientSummary = JSON.stringify(patientSummary)
+        if (this.oldPatientSummary === newPatientSummary) return
+        this.oldPatientSummary = newPatientSummary
+        console.info("newPatientSummary=", newPatientSummary)
+        this.setState({ ...patientSummary })
     }
 
     componentDidMount = this.refresh
@@ -74,18 +76,19 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
     }
 
     private handleBirthChange = (birthTime: number) => {
-        // "birth" is the number of ms since Epoc.
+        // "birthTime" is the number of milliseconds since Epoc.
         this.setState({ birth: new Date(birthTime) }, this.fireChange)
     }
 
     render() {
+        console.log("[render()] patient-form")
         const classes = [
             'view-PatientForm',
             ...Tfw.Converter.StringArray(this.props.className, [])
         ]
         const {
             lastname, firstname, secondname,
-            gender, birth, size
+            gender, birth, country, size
         } = this.state
 
         return (<div className={classes.join(' ')}>
@@ -100,20 +103,20 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
             <Input
                 label={Translate.firstName}
                 transform={Tfw.Util.normalizeFirstname}
-                wide={true}
+                wide={false}
                 value={firstname}
                 onChange={this.handleFirstnameChange}
             />
             <Input
                 label={Translate.secondName}
                 transform={Tfw.Util.normalizeFirstname}
-                wide={true}
+                wide={false}
                 value={secondname}
                 onChange={this.handleSecondnameChange}
             />
             <TextField
                 label={Translate.gender}
-                wide={true}
+                wide={false}
                 type="#GENDER"
                 value={gender}
                 onChange={this.handleGenderChange}
@@ -125,9 +128,9 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
             />
             <TextField
                 label={Translate.country}
-                wide={true}
+                wide={false}
                 type="#COUNTRY"
-                value={""}
+                value={country}
                 onChange={this.handleCountryChange}
             />
             <InputInteger

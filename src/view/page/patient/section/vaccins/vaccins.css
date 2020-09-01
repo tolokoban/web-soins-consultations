@@ -9,15 +9,18 @@ div.view-page-patient-section-Vaccins div.vaccin {
     background: #aaa;
 }
 
-div.view-page-patient-section-Vaccins div.vaccin.good {
+div.view-page-patient-section-Vaccins .vaccin.good,
+div.view-page-patient-section-Vaccins .good {
     background: #7f7;
 }
 
-div.view-page-patient-section-Vaccins div.vaccin.warning {
+div.view-page-patient-section-Vaccins .vaccin.warning,
+div.view-page-patient-section-Vaccins .warning {
     background: #fe7;
 }
 
-div.view-page-patient-section-Vaccins div.vaccin.bad {
+div.view-page-patient-section-Vaccins .vaccin.bad,
+div.view-page-patient-section-Vaccins .bad {
     background: #f77;
     color: #fff;
 }
@@ -32,4 +35,14 @@ div.view-page-patient-section-Vaccins > div.vaccins {
     grid-template: repeat(10, 1fr) / repeat(3, 1fr);
     grid-auto-flow: column;
     grid-gap: .5rem;
+}
+
+div.view-page-patient-section-Vaccins li {
+    margin: .5rem 0;
+}
+
+div.view-page-patient-section-Vaccins li > span {
+    margin: 0.125rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 100vw;
 }

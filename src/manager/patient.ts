@@ -10,6 +10,7 @@ export default {
     getSummary,
     getSummaryFromRecord,
     removeConsultation,
+    setSummary,
     updateConsultation
 }
 
@@ -29,6 +30,19 @@ function getConsultationFromUuid(patient: IPatient, consultationId: string): ICo
 function getSummary(patient: IPatient): IPatientSummary {
     patient.data.id = patient.id
     return getSummaryFromRecord(patient.data)
+}
+
+/**
+ * Update patient with a new summary.
+ */
+function setSummary(patient: IPatient, patientSummary: IPatientSummary) {
+    patient.data["#PATIENT-BIRTH"] = DateUtil.date2seconds(patientSummary.birth)
+    patient.data["#PATIENT-COUNTRY"] = patientSummary.country
+    patient.data["#PATIENT-FIRSTNAME"] = patientSummary.firstname
+    patient.data["#PATIENT-SECONDNAME"] = patientSummary.secondname
+    patient.data["#PATIENT-LASTNAME"] = patientSummary.lastname
+    patient.data["#PATIENT-GENDER"] = patientSummary.gender
+    patient.data["#PATIENT-SIZE"] = patientSummary.size
 }
 
 function getSummaryFromRecord(record: IRecord): IPatientSummary {

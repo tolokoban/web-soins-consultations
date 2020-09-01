@@ -94,6 +94,11 @@ export interface IStructure {
     forms: {
         [key: string]: IFormField
     },
+    exams: {
+        [key: string]: {
+            [key: string]: string[]
+        }
+    },
     types: ITypes,
     vaccins: IVaccins,
     sources: {

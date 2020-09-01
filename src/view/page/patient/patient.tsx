@@ -5,16 +5,23 @@ import Translate from '../../../translate'
 import PatientShortDesc from '../../patient-short-desc'
 import PatientService from '../../../service/patient'
 import Consultations from './section/consultations'
+import Prescriptions from './section/prescriptions'
 import Vaccins from './section/vaccins'
 import Guid from '../../../guid'
 import DateUtil from '../../../date-util'
+import Settings from '../../../settings'
+import PatientForm from '../../patient-form'
+import PatientManager from '../../../manager/patient'
 import {
     IPatientSummary, IPatient, IConsultation, IAdmission, IVaccin
 } from "../../../types"
 
-
 import "./patient.css"
 
+
+interface IDialog {
+    hide(): void
+}
 const Button = Tfw.View.Button
 const TabStrip = Tfw.Layout.TabStrip
 
@@ -87,6 +94,59 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
         State.clearPatient()
     }
 
+    private handleEditPatient = async () => {
+        const patient = this.state.patient
+        if (!patient) return
+        let patientSummary = PatientManager.getSummary(patient)
+        console.info("patient=", patient)
+        console.info("patientSummary=", patientSummary)
+        const dialog = Tfw.Factory.Dialog.show({
+            title: Translate.editPatient,
+            content: <div>
+                <PatientForm
+                    patientSummary={patientSummary}
+                    onChange={summary => patientSummary = { ...summary }}
+                />
+                <hr/>
+                <Button
+                    label={Translate.deletePatient}
+                    icon="delete" warning={true}
+                    onClick={() => this.handleDeletePatient(patientSummary.id, dialog)}
+                />
+            </div>,
+            footer: [
+                <Button
+                    label={Translate.cancel}
+                    flat={true}
+                    onClick={() => dialog.hide()}
+                />,
+                <Button
+                    label={Translate.ok}
+                    warning={true}
+                    onClick={async () => {
+                        PatientManager.setSummary(patient, patientSummary)
+                        await PatientService.setPatient(patient)
+                        dialog.hide()
+                        this.handleBack()
+                        State.setPatients(await PatientService.getAllPatients())
+                    }}
+                />
+            ]
+        })
+    }
+
+    private handleDeletePatient = async (patientId: string, dialog: IDialog) => {
+        const confirm = Tfw.Factory.Dialog.confirm(
+            Translate.deletePatient,
+            <div>{Translate.confirmDeletePatient}</div>
+        )
+        if (!confirm) return
+        dialog.hide()
+        await PatientService.deletePatient(patientId)
+        State.setPatients(await PatientService.getAllPatients())
+        this.handleBack()
+    }
+
     render() {
         const classes = [
             'view-page-Patient',
@@ -99,7 +159,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     label={Translate.back}
                     icon="back"
                     small={true}
-                    warning={true}
+                    warning={false}
                     onClick={this.handleBack}
                 />
                 <PatientShortDesc patient={this.props.patientSummary} />
@@ -107,13 +167,17 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     label={Translate.editPatient}
                     icon="user"
                     small={true}
-                    warning={false}
-                    onClick={this.handleBack}
+                    warning={true}
+                    onClick={this.handleEditPatient}
                 />
             </header>
             <section>
                 <TabStrip
-                    headers={[Translate.consultations, Translate.vaccins]}
+                    headers={[
+                        Translate.consultations,
+                        Translate.vaccins,
+                        Translate.prescriptions
+                    ]}
                 >
                     <Consultations
                         patient={this.state.patient}
@@ -123,6 +187,10 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     <Vaccins
                         patient={this.state.patient}
                         onUpdateVaccin={this.handleUpdateVaccin}
+                    />
+                    <Prescriptions
+                        patient={this.state.patient}
+                        structure={Settings.structure}
                     />
                 </TabStrip>
             </section>

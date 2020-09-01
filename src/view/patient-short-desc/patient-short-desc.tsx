@@ -35,7 +35,10 @@ export default class PatientShortDesc extends React.Component<IPatientShortDescP
             >
                 <span className="lastname">{patient.lastname.toUpperCase()}</span>
                 <span className="firstname">{patient.firstname}</span>
-                <span className="secondname">{patient.secondname}</span>
+                {
+                    hasSecondName(patient) &&
+                    <span className="secondname">{patient.secondname}</span>
+                }
                 {
                     DateUtil.isDefinedDate(patient.birth) &&
                     <span className="age">{age} <em>ans</em></span>
@@ -47,4 +50,13 @@ export default class PatientShortDesc extends React.Component<IPatientShortDescP
             </div>
         )
     }
+}
+
+
+function hasSecondName(patient: IPatientSummary): boolean {
+    const { secondname } = patient
+    if (typeof secondname !== 'string') return false
+    if (secondname.trim().length === 0) return false
+    if (secondname.trim().toLowerCase() === 'undefined') return false
+    return true
 }

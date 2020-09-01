@@ -22,11 +22,8 @@ interface IAppProps {
     onPatientClick(patientSummary: IPatientSummary): void
     onEndOfConsultationEdition(consultation: IConsultation | null, patient?: IPatient): void
 }
-interface IAppState { }
 
-export default class App extends React.Component<IAppProps, IAppState> {
-    state = {}
-
+export default class App extends React.Component<IAppProps, {}> {
     componentDidMount() {
         Splash.hide()
     }
@@ -44,7 +41,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
 
     render() {
-        console.log("APP")
         const classes = [
             'App', "thm-bg0",
             ...Tfw.Converter.StringArray(this.props.className, [])
