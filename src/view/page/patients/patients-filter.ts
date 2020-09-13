@@ -27,6 +27,17 @@ export default class PatientsExport {
                     && match(item.firstName, simpleFirstName)
             }
         )
+        this._filteredList.sort(
+            (p1: IPatientSummary, p2: IPatientSummary) => {
+                if (p1.lastname > p2.lastname) return +1
+                if (p1.lastname < p2.lastname) return -1
+                if (p1.firstname > p2.firstname) return +1
+                if (p1.firstname < p2.firstname) return -1
+                if (p1.secondname > p2.secondname) return +1
+                if (p1.secondname < p2.secondname) return -1
+                return 0
+            }
+        )
     }
 
     get filteredList() { return this._filteredList.slice() }

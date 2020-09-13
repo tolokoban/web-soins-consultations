@@ -110,7 +110,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                 <hr/>
                 <Button
                     label={Translate.deletePatient}
-                    icon="delete" warning={true}
+                    icon="delete" color="S"
                     onClick={() => this.handleDeletePatient(patientSummary.id, dialog)}
                 />
             </div>,
@@ -122,7 +122,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                 />,
                 <Button
                     label={Translate.ok}
-                    warning={true}
+                    color="S"
                     onClick={async () => {
                         PatientManager.setSummary(patient, patientSummary)
                         await PatientService.setPatient(patient)
@@ -159,7 +159,6 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     label={Translate.back}
                     icon="back"
                     small={true}
-                    warning={false}
                     onClick={this.handleBack}
                 />
                 <PatientShortDesc patient={this.props.patientSummary} />
@@ -167,7 +166,7 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                     label={Translate.editPatient}
                     icon="user"
                     small={true}
-                    warning={true}
+                    color="S"
                     onClick={this.handleEditPatient}
                 />
             </header>

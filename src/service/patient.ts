@@ -15,7 +15,7 @@ import Guid from '../guid'
 
 export default {
     deletePatient,
-    getAllPatients, getPatient, getSummary,
+    getAllPatients, getPatient, getPatientFolder, getSummary,
     exists, setPatient
 }
 
@@ -122,6 +122,13 @@ async function setPatient(patient: IPatient): Promise<IPatient> {
     }
 }
 
+/**
+ * Return the folder of a specific patient.
+ * Can be used to store patient prescriptions documents, for instance.
+ */
+function getPatientFolder(id: string, path = "."): string {
+    return `${path}/${id}/`
+}
 
 async function deletePatient(patientId: string) {
     try {

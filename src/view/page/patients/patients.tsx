@@ -77,7 +77,6 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
     }
 
     private handlePatientSummaryClick = (patientSummary: IPatientSummary) => {
-        console.info("patientSummary=", patientSummary)
         this.props.onPatientChange(patientSummary)
         this.props.onPatientClick(patientSummary)
     }
@@ -114,7 +113,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                 <Button
                     icon="close"
                     small={true}
-                    warning={true}
+                    color="S"
                     label="Quitter"
                     onClick={() => process.exit(0)}
                 />
@@ -144,7 +143,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                             wide={true}
                             label={Translate.addPatient}
                             enabled={canAddNewPatient(patient)}
-                            warning={true}
+                            color="S"
                             onClick={this.handleAddNewPatient}
                         />
                     </div>

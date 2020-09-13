@@ -40,9 +40,9 @@ export default class Text extends React.Component<ITextProps, ITextState> {
         const type = this.props.type
         const value = this.props.value
         const suggestions = getSuggestionsForType(structure, type)
-
+console.log("<Text>.render()")
         return <Input
-            className={classes}
+            className={classes.join(" ")}
             label={this.props.label}
             wide={this.props.wide}
             width={this.props.width}

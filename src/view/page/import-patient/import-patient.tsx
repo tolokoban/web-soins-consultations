@@ -115,7 +115,7 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                     icon="left"
                     label="Retour"
                     enabled={!isWorking}
-                    warning={true}
+                    color="S"
                     onClick={this.handleBack}
                 />
                 <p>

@@ -5,7 +5,10 @@
  */
 
 declare const nw: {
-    App: {},
+    App: {}
+    Shell: {
+        openItem(filename: string): void
+    }
     Window: {
         get(): INWJSWindow
         getAll(callback: (windows: INWJSWindow[]) => void): void

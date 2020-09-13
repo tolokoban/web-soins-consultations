@@ -29,7 +29,22 @@ div.view-page-Patients>section div.patients-form {
     border-radius: .5rem;
 }
 
+div.view-page-Patients > section div.patients-list {
+    height: calc(100vh - 4rem);
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+div.view-page-Patients > section h1 {
+    flex: 0 0 auto;
+}
+
 div.view-page-Patients > section .list {
+    flex: 1 1 auto;
+    overflow-y: auto;
     min-width: 50vw;
     max-height: calc(100vh - 7rem);
 }

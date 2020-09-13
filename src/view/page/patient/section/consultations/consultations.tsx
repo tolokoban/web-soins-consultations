@@ -26,7 +26,8 @@ export default class Consultations extends React.Component<IConsultationsProps, 
         const dat = DateUtil.seconds2date(consultation.enter)
         return <Button
             label={DateUtil.formatDate(dat)}
-            icon="edit" small={true} dark={true}
+            icon="edit" small={true}
+            color="PD"
             className="consultation"
             key={consultation.enter}
             onClick={() => this.props.onConsultationClick(consultation.uuid)}

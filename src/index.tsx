@@ -11,12 +11,12 @@ import StructureService from './service/structure'
 import * as serviceWorker from './serviceWorker'
 
 Tfw.Theme.register("soin", {
-    white: "#fda", black: "#420",
-    bg0: "#ffcb97", bg1: "#ffdab3", bg2: "#ffe6cc", bg3: "#fff3e6",
-    bgP: "#804924", bgPL: "#b36633", bgPD: "#4d2c16",
-    bgS: "#ff9f30", bgSD: "#ff7f00", bgSL: "#ffbf60"
+    colorW: "#fda", colorB: "#420", colorE: "#B20",
+    color0: "#ffcb97", color1: "#ffdab3", color2: "#ffe6cc", color3: "#fff3e6",
+    colorP: "#804924", colorPL: "#b36633", colorPD: "#4d2c16",
+    colorS: "#ff9f30", colorSD: "#ff7f00", colorSL: "#ffbf60"
 })
-Tfw.Theme.apply("soin")
+console.log(Tfw.Theme.apply("soin"))
 Tfw.Font.loadJosefin()
 
 async function start() {

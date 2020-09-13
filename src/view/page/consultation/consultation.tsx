@@ -94,12 +94,13 @@ export default class Consultations extends React.Component<IConsultationsProps, 
                         label={Translate.ok}
                         icon="ok"
                         small={true}
-                        warning={true}
+                        color="S"
                         onClick={this.handleOK}
                     />
                     <Button
                         label={Translate.cancel}
                         icon="cancel"
+                        color="S"
                         small={true}
                         flat={true}
                         onClick={this.handleCancel}

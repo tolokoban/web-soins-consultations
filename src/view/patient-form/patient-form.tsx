@@ -94,7 +94,7 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
         return (<div className={classes.join(' ')}>
             <Input
                 label={Translate.lastName}
-                transform={Tfw.Util.normalizeLastname}
+                transform={Tfw.Transform.upperCase}
                 wide={true}
                 focus={true}
                 value={lastname}
@@ -102,14 +102,14 @@ export default class PatientForm extends React.Component<IPatientFormProps, IPat
             />
             <Input
                 label={Translate.firstName}
-                transform={Tfw.Util.normalizeFirstname}
+                transform={Tfw.Transform.normalizeName}
                 wide={false}
                 value={firstname}
                 onChange={this.handleFirstnameChange}
             />
             <Input
                 label={Translate.secondName}
-                transform={Tfw.Util.normalizeFirstname}
+                transform={Tfw.Transform.normalizeName}
                 wide={false}
                 value={secondname}
                 onChange={this.handleSecondnameChange}

@@ -54,7 +54,7 @@ function getSummaryFromRecord(record: IRecord): IPatientSummary {
             )
         ),
         country: `${record["#PATIENT-COUNTRY"]}`,
-        firstname: Tfw.Util.normalizeFirstname(
+        firstname: Tfw.Transform.normalizeName(
             `${record["#PATIENT-FIRSTNAME"]}`
         ),
         gender: Tfw.Converter.Enum<string>(
@@ -62,10 +62,10 @@ function getSummaryFromRecord(record: IRecord): IPatientSummary {
             ["#F", "#M", "#X"],
             "#X"
         ),
-        lastname: Tfw.Util.normalizeLastname(
+        lastname: Tfw.Transform.upperCase(
             `${record["#PATIENT-LASTNAME"]}`
         ),
-        secondname: Tfw.Util.normalizeFirstname(
+        secondname: Tfw.Transform.normalizeName(
             `${record["#PATIENT-SECONDNAME"]}`
         ),
         size: Tfw.Converter.Integer(
