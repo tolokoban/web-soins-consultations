@@ -1,7 +1,6 @@
 import React from "react"
 import Tfw from 'tfw'
 import DateUtil from '../../../date-util'
-import State from '../../../state'
 import Translate from '../../../translate'
 import PatientShortDesc from '../../patient-short-desc'
 import PatientManager from '../../../manager/patient'
@@ -19,7 +18,7 @@ interface IConsultationsProps {
     className?: string | string[]
     patientSummary: IPatientSummary
     consultationId: string
-    // If null consultation is given, that is a cancel opération.
+    // If a null consultation is given, that is a cancel opération.
     onBack(consultation: IConsultation | null, patient?: IPatient): void
 }
 interface IConsultationsState {

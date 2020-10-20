@@ -1,0 +1,35 @@
+.view-ConsoleView {
+    flex: 1 1 auto;
+    border-radius: .25rem;
+    background: #210;
+    color: #ccc;
+    font-size: .6rem;
+    font-family: monospace;
+    margin: 0;
+    padding: .5rem;
+    overflow: auto;
+}
+
+.view-ConsoleView > li {
+    margin-left: 1rem;
+}
+
+.view-ConsoleView > li::marker {
+    color: #eee;
+}
+
+.view-ConsoleView > li strong {
+    color: #fff;
+}
+
+.view-ConsoleView > li em {
+    color: #f66;
+    font-weight: bolder;
+}
+
+.view-ConsoleView > li a,
+.view-ConsoleView > li a:visited {
+    color: inherit;
+    pointer-events: none;
+    cursor: default;    
+}

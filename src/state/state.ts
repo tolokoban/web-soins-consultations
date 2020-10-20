@@ -18,10 +18,21 @@ const INITIAL_STATE: IAppState = {
         country: "",
         birth: DateUtil.createUndefinedDate()
     },
-    patients: []
+    patients: [],
+    logs: []
 }
 
-type IAction = IActionSetPage | IActionSetPatients | IActionSetPatient | IActionSetConsultationId
+type IAction = 
+    | IActionAddLog 
+    | IActionSetPage 
+    | IActionSetPatients 
+    | IActionSetPatient 
+    | IActionSetConsultationId
+
+interface IActionAddLog {
+    type: "add-log",
+    log: string
+}
 
 interface IActionSetPage {
     type: "set-page",
@@ -50,6 +61,11 @@ function reducer(
     action: IAction
 ): IAppState {
     switch (action.type) {
+        case 'add-log':
+            return { 
+                ...state, 
+                logs: [action.log, ...state.logs].splice(0, 1024) 
+            }
         case 'set-consultation-id':
             return { ...state, consultationId: action.consultationId }
         case 'set-page':
@@ -72,6 +88,9 @@ export default {
             country: "", gender: "", size: 0
         }
         dispatch({ type: "set-patient", patient })
+    },
+    addLog(message: string) {
+        dispatch({ type: "add-log", log: message })
     },
     setConsultationId(uuid: string) {
         dispatch({ type: "set-consultation-id", consultationId: uuid })

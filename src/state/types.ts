@@ -5,4 +5,5 @@ export interface IAppState {
     page: string
     patient: IPatientSummary
     patients: IPatientSummary[]
+    logs: string[]
 }

@@ -1,44 +1,21 @@
-This project was bootstrapped with [Create NW.js React App](https://github.com/naviapps/create-nw-react-app).
+# Web-soins Consultations
 
-## Available Scripts
+This is the client application for consultations.
 
-In the project directory, you can run:
+## Deployment
 
-### `npm start`
+```bash
+npm run deploy
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This will build the project, create a `package.txt` file with the checksum of all the files and send all this on gh-pages.
+`package.txt` looks like this:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+c02f1ef5a68d32e3d75b42ccf1eb5db7188d4c2b6677022ad598b9e5e6b5325e  ./package.json
+9ea4f4da7050c0cc408926f6a39c253624e9babb1d43c7977cd821445a60b461  ./logo512.png
+b89b7e47317829c407c13435d1a5c6a8b3b1dec6d88d4e0e45d17ea587ef1b99  ./static/media/wheel.d73f403c.png
+3d91f7aa69cb7f7064035895c566ac5cb9b2084582d351af7267bb4e0fba60f5  ./static/media/Roboto-Thin.89e2666c.ttf
+```
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This is the first file read by the [upgrader script](upgrader/README.md).

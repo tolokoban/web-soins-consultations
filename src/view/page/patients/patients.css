@@ -19,8 +19,15 @@ div.view-page-Patients>section {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: stretch;
 }
+
+div.view-page-Patients>section>div.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+} 
 
 div.view-page-Patients>section div.patients-form {
     max-width: 40vw;

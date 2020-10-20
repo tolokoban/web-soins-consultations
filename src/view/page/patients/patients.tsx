@@ -11,6 +11,7 @@ import PatientService from '../../../service/patient'
 import Package from '../../../../package.json'
 import DateUtil from '../../../date-util'
 import Settings from '../../../settings'
+import ConsoleView from '../../console'
 
 import "./patients.css"
 
@@ -126,7 +127,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                 />
             </header>
             <section>
-                <div>
+                <div className="flex-col">
                     <div className="patients-form thm-bg2 thm-ele-button">
                         <h1>Données démographiques du patient</h1>
                         <PatientForm
@@ -147,9 +148,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
                             onClick={this.handleAddNewPatient}
                         />
                     </div>
-                    <div className="remote-server">{
-                        Settings.remoteServer
-                    }</div>
+                    <ConsoleView />
                 </div>
                 <div className="patients-list">
                     <h1>Patients correspondant au filtre: &nbsp;

@@ -7,6 +7,7 @@ import App from './app'
 import State from './state'
 import Settings from './settings'
 import PatientService from './service/patient'
+import SynchroService from './service/synchro'
 import StructureService from './service/structure'
 import * as serviceWorker from './serviceWorker'
 
@@ -17,9 +18,9 @@ Tfw.Theme.register("soin", {
     colorS: "#ff9f30", colorSD: "#ff7f00", colorSL: "#ffbf60"
 })
 console.log(Tfw.Theme.apply("soin"))
-Tfw.Font.loadJosefin()
 
 async function start() {
+    await Tfw.Font.loadJosefin(true)
     window.addEventListener("keyup", (evt) => {
         if (evt.key === "F11") {
             evt.preventDefault()
@@ -30,6 +31,7 @@ async function start() {
     }, true)
     console.info("process.env=", process.env)
     await Settings.initialize()
+    State.addLog(`Serveur distant: __${Settings.remoteServer}__`)
     const patients = await PatientService.getAllPatients()
     console.info("patients=", patients)
     State.setPatients(patients)
@@ -46,6 +48,10 @@ async function start() {
             </React.StrictMode>
         </Provider>,
         document.getElementById('root')
+    )
+
+    SynchroService.synchro(
+        State.addLog
     )
 }
 

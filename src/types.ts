@@ -114,3 +114,8 @@ export interface IRecord {
     id: string,
     [key: string]: string | number
 }
+
+export interface ISynchroStatus {
+    [key: string]: { [key: string]: number }
+}
+
