@@ -88,7 +88,7 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
         )
         await Tfw.Factory.Dialog.wait(
             Translate.addPatient,
-            new Promise(async (resolve) => {
+            new Promise<void>(async (resolve) => {
                 await PatientService.setPatient(patient)
                 const patientSummaries = await PatientService.getAllPatients()
                 State.setPatients(patientSummaries)
@@ -113,15 +113,13 @@ export default class Patients extends React.Component<IPatientsProps, IPatientsS
             <header className="thm-bgPD thm-ele-nav">
                 <Button
                     icon="close"
-                    small={true}
-                    color="S"
                     label="Quitter"
-                    onClick={() => process.exit(0)}
+                    onClick={() => nw.App.quit()}
                 />
                 <div>WebSoins Consultations v{Package.version}</div>
                 <Button
+                    width="auto"
                     label={Translate.importPatients}
-                    small={true}
                     icon="import"
                     onClick={() => State.setPage("import-patients")}
                 />

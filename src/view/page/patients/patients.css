@@ -3,6 +3,7 @@ div.view-page-Patients {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    overflow: hidden;
 }
 
 div.view-page-Patients>header {

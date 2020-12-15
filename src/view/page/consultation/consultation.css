@@ -25,3 +25,16 @@ div.view-page-Consultation>section {
     overflow-x: hidden;
     flex: 1 1 auto;
 }
+
+div.view-page-Consultation>section>div.consultation-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.view-page-Consultation>section>div.consultation-date>p {
+    flex: 1 1 auto;
+    padding: .5rem;
+    max-width: 50vw;
+}

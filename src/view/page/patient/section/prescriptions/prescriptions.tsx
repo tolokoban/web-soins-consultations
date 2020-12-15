@@ -117,13 +117,13 @@ export default class Prescriptions extends React.Component<IPrescriptionsProps, 
         }
         const content = await this.buildContent(pages)
         console.info("content=", content)
-        arch.folder("META-INF") ?.file("manifest.xml", await Tfw.Util.loadTextFromURL("META-INF/manifest.xml"))
+        arch.folder("META-INF")?.file("manifest.xml", await loadFile("META-INF/manifest.xml"))
         arch.file("content.xml", content)
-        arch.file("manifest.rdf", await Tfw.Util.loadTextFromURL("manifest.rdf"))
-        arch.file("meta.xml", await Tfw.Util.loadTextFromURL("meta.xml"))
-        arch.file("mimetype", await Tfw.Util.loadTextFromURL("mimetype"))
-        arch.file("settings.xml", await Tfw.Util.loadTextFromURL("settings.xml"))
-        arch.file("styles.xml", await Tfw.Util.loadTextFromURL("styles.xml"))
+        arch.file("manifest.rdf", await loadFile("manifest.rdf"))
+        arch.file("meta.xml", await loadFile("meta.xml"))
+        arch.file("mimetype", await loadFile("mimetype"))
+        arch.file("settings.xml", await loadFile("settings.xml"))
+        arch.file("styles.xml", await loadFile("styles.xml"))
         const now = new Date()
         const filename = Path.resolve(
             PatientService.getPatientFolder(patient.id),
@@ -150,9 +150,9 @@ export default class Prescriptions extends React.Component<IPrescriptionsProps, 
                 })
                 .on('finish', () => {
                     console.log("File has been written to the disk.")
-                    Tfw.Factory.Dialog.alert(<div>
+                    Tfw.Factory.Dialog.info(<div>
                         <p>Le document a été généré avec succès et sauvegardé sur le disque :</p>
-                        <code>{filename}</code>
+                        <small><code>{filename}</code></small>
                     </div>)
                     nw.Shell.openItem(filename)
                 })
@@ -168,7 +168,7 @@ export default class Prescriptions extends React.Component<IPrescriptionsProps, 
         const summary = PatientManager.getSummary(patient)
         const { service, prescripteur } = this.state
 
-        let out: string = await Tfw.Util.loadTextFromURL("./doc/prescription/content.head.xml")
+        let out: string = await loadFile("content.head.xml")
         for (const page of pages) {
             const [pageTitle, sections] = page
             var today = new Date()
@@ -211,7 +211,7 @@ export default class Prescriptions extends React.Component<IPrescriptionsProps, 
             }
         }
 
-        return `${out}${Tfw.Util.loadTextFromURL('./doc/prescription/content.foot.xml')}`
+        return `${out}${await loadFile('content.foot.xml')}`
     }
 
     render() {
@@ -244,6 +244,7 @@ export default class Prescriptions extends React.Component<IPrescriptionsProps, 
             />
             <Button
                 icon="print"
+                width="auto"
                 label="Préparer le document pour impression"
                 onClick={this.handlePrint}
             />
@@ -320,4 +321,9 @@ function tag(name: string, ...args: Array<string | IAttributes>) {
     }
 
     return out
+}
+
+
+async function loadFile(filename: string) {
+    return await Tfw.Util.loadTextFromURL(`doc/prescription/${filename}`)
 }

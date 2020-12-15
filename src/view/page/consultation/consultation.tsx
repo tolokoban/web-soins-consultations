@@ -68,7 +68,7 @@ export default class Consultations extends React.Component<IConsultationsProps, 
 
     private handleDataChange = (time: number) => {
         const { consultation } = this.state
-        if (consultation ) {
+        if (consultation) {
             consultation.enter = Math.floor(time / 1000)
         }
     }
@@ -92,16 +92,13 @@ export default class Consultations extends React.Component<IConsultationsProps, 
                     <Button
                         label={Translate.ok}
                         icon="ok"
-                        small={true}
                         color="S"
                         onClick={this.handleOK}
                     />
                     <Button
                         label={Translate.cancel}
+                        width="auto"
                         icon="cancel"
-                        color="S"
-                        small={true}
-                        flat={true}
                         onClick={this.handleCancel}
                     />
                 </div>
@@ -111,11 +108,16 @@ export default class Consultations extends React.Component<IConsultationsProps, 
                 <PatientShortDesc patient={patientSummary} />
             </header>
             <section>
-                <InputDate
-                    label={Translate.consultationDate}
-                    value={consultation.enter * 1000}
-                    onChange={this.handleDataChange}
-                />
+                <div className="consultation-date">
+                    <InputDate
+                        label={Translate.consultationDate}
+                        value={consultation.enter * 1000}
+                        onChange={this.handleDataChange}
+                    />
+                    <p className="thm-bgSD">{
+                        Translate.warningConsultationDate
+                    }</p>
+                </div>
                 <hr />
                 <ConsultationForm
                     patient={patient}

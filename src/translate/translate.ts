@@ -7,10 +7,12 @@ export default {
     get back() { return _('back') },
     get birthday() { return _('birthday') },
     get cancel() { return _('cancel') },
+    get clickToEdit() { return _('click-to-edit')},
     get close() { return _('close') },
     get code() { return _('code') },
     get confirmDeletePatient() { return _('confirm-patient-delete') },
     get consultationDate() { return _('consultation-date') },
+    get consultation() { return _('consultation') },
     get consultations() { return _('consultations') },
     get consultationsCount() { return _('consultations-count') },
     get country() { return _('country') },
@@ -45,5 +47,6 @@ export default {
     get struct() { return _('struct') },
     get vaccinDate() { return _('vaccin-date') },
     get vaccinLot() { return _('vaccin-lot') },
-    get vaccins() { return _('vaccins') }
+    get vaccins() { return _('vaccins') },
+    get warningConsultationDate() { return _('warning-consultation-date') },
 }

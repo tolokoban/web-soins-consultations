@@ -81,6 +81,7 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                 if (PatientService.exists(patient.id)) {
                     rejectedPatientsCount++
                     this.setState({ rejectedPatientsCount })
+                    await Tfw.Async.sleep(2)
                 } else {
                     addedPatientsCount++
                     this.setState({ addedPatientsCount })
@@ -115,7 +116,6 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                     icon="left"
                     label="Retour"
                     enabled={!isWorking}
-                    color="S"
                     onClick={this.handleBack}
                 />
                 <p>
@@ -128,7 +128,8 @@ export default class ImportPatient extends React.Component<IImportPatientProps, 
                     accept=".json"
                     icon="user"
                     label='Importer le fichier "patients.json"'
-                    wide={true}
+                    color="S"
+                    wide={true}                    
                     enabled={!isWorking && count === 0}
                     onClick={this.handleFilesClick}
                 />

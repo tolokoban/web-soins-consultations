@@ -105,7 +105,11 @@ function parse(code: string): { [key: string]: IFormField } {
             line = line.substr(level).trim();
 
             if (level > levels.length) {
-                throw _('err-2', line, levels.length - 1, level);
+                throw _(
+                    'err-2', 
+                    line, 
+                    `${levels.length - 1}`, 
+                    `${level}`)
             }
             while (levels.length > level) {
                 levels.pop();

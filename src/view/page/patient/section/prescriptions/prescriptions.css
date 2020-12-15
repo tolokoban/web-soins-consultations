@@ -1,1 +1,3 @@
-div.view-page-patient-section-Prescriptions {}
+div.view-page-patient-section-Prescriptions {
+    overflow: auto;
+}

@@ -1,1 +1,26 @@
-div.view-page-patient-section-Consultations {}
+div.view-page-patient-section-Consultations .consultation {
+    margin: .5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 22rem;
+}
+
+div.view-page-patient-section-Consultations .consultation > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div.view-page-patient-section-Consultations .consultation > div > div.date {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+div.view-page-patient-section-Consultations .consultation > div > div.hint {
+    opacity: .5;
+}

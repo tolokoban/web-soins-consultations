@@ -75,6 +75,11 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
             </Expand>
         }
 
+        if (field.id === '#CONSULTATION-DATE') {
+            console.warn("We have ignore an old field because of it's id: ", field)
+            return null
+        }
+
         const { consultation } = this.props
         const prevConsultations = PatientManager.getAllConsultationsBefore(
             this.props.patient,
@@ -82,9 +87,12 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         )
 
         if (isBool(field)) {
-            return <div className="field">
+            return <div
+                key={field.id}
+                className="field"
+                title={field.id}
+            >
                 <Checkbox
-                    key={field.id}
                     wide={false}
                     label={field.caption}
                     value={this.getFieldValueAsBoolean(field)}
@@ -95,9 +103,12 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
         }
 
         if (field.tags.indexOf("DATE") > -1) {
-            return <div className="field">
+            return <div
+                key={field.id}
+                className="field"
+                title={field.id}
+            >
                 <InputDate
-                    key={field.id}
                     label={field.caption}
                     value={this.getFieldValueAsDate(field)}
                     wide={false}
@@ -109,9 +120,12 @@ export default class ConsultationForm extends React.Component<IConsultationFormP
             </div>
         }
 
-        return <div className="field">
+        return <div
+            key={field.id}
+            className="field"
+            title={field.id}
+        >
             <TextField
-                key={field.id}
                 label={field.caption}
                 value={this.getFieldValue(field)}
                 type={field.type || ""}

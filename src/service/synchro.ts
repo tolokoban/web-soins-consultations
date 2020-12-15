@@ -47,8 +47,10 @@ async function updateConsultations(
 ) {
     for (const patientSummary of patients) {
         const patient = await PatientService.getPatient(patientSummary.id)
+        const remoteConsultations = status[patient.id] ?? {}
         for (const admission of patient.admissions) {
-            for (const cunsultation of admission.visits) {
+            for (const consultation of admission.visits) {
+                const remoteConsultationVersion = remoteConsultations[consultation.uuid] ?? 0
                 
             }
         }

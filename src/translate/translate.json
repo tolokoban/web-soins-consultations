@@ -4,10 +4,12 @@
         "back": "Retour",
         "birthday": "Date de naissance",
         "cancel": "Annuler",
+        "click-to-edit": "Cliquez pour Éditer",
         "close": "Fermer",
         "code": "Code :",
         "confirm-patient-delete": "Êtes-vous sûr de vouloir supprimer ce-tte patient-e ?",
         "consultation-date": "Date de consultation",
+        "consultation": "Consultation",
         "consultations": "Consultations",
         "consultations-count": "Nb Consultations :",
         "country": "Pays",
@@ -36,6 +38,7 @@
         "struct": "Structure :",
         "vaccin-date": "Date du dernier vaccin",
         "vaccin-lot": "Numéro de lot",
-        "vaccins": "Vaccins"
+        "vaccins": "Vaccins",
+        "warning-consultation-date": "Attention ! Il est possible de modifier la date de consultation ainsi que tous les autres champs à tout moment. Mais, pour éviter de fausser les statistiques, veuillez ne le faire que lorsque c'est nécessaire."
     }
 }

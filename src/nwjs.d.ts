@@ -5,7 +5,9 @@
  */
 
 declare const nw: {
-    App: {}
+    App: {
+        quit(): void
+    }
     Shell: {
         openItem(filename: string): void
     }

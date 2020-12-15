@@ -158,15 +158,13 @@ export default class Patient extends React.Component<IPatientProps, IPatientStat
                 <Button
                     label={Translate.back}
                     icon="back"
-                    small={true}
                     onClick={this.handleBack}
                 />
                 <PatientShortDesc patient={this.props.patientSummary} />
                 <Button
                     label={Translate.editPatient}
                     icon="user"
-                    small={true}
-                    color="S"
+                    width="auto"
                     onClick={this.handleEditPatient}
                 />
             </header>
