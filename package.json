@@ -1,6 +1,6 @@
 {
     "name": "web-soins-consultations",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "private": true,
     "dependencies": {
         "@testing-library/jest-dom": "^4.2.4",
@@ -12,12 +12,14 @@
         "@types/react-dom": "^16.9.8",
         "@types/react-redux": "^7.1.9",
         "@types/uuid": "^8.3.0",
+        "jszip": "^3.5.0",
+        "markdown-to-jsx": "^7.0.1",
         "nw-react-scripts": "3.4.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.1",
         "redux": "^4.0.5",
-        "tfw": "^0.37.0",
+        "tfw": "^0.55.17",
         "typescript": "^3.9.7",
         "uuid": "^8.3.0"
     },
@@ -25,6 +27,7 @@
         "postbuild": "cd build ; rm -rf web-soins-consultations/ ; find . -type f -exec sha256sum {} \\; > package.txt",
         "start": "REACT_APP_WEBSOINS=DEV nw-react-scripts start",
         "build": "nw-react-scripts build",
+        "predeploy": "npm run build",
         "deploy": "gh-pages -d build",
         "test": "nw-react-scripts test",
         "eject": "nw-react-scripts eject"

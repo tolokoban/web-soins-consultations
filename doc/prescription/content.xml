@@ -1,0 +1,41 @@
+<text:p text:style-name="P18">Prescription d’ examen biologique</text:p>
+<text:p text:style-name="P2">
+    <text:span text:style-name="T5">Nom du patient : </text:span>
+    <text:span text:style-name="T3">LASTNAME</text:span>
+    <text:span text:style-name="T6">
+        <text:tab/>
+    </text:span>
+    <text:span text:style-name="T5">Prénom : </text:span>
+    <text:span text:style-name="T3">FIRSTNAME</text:span>
+</text:p>
+<text:p text:style-name="P1">
+    <text:span text:style-name="T5">Date de naissance : </text:span>
+    <text:span text:style-name="T3">BIRTHDATE</text:span>
+</text:p>
+<text:p text:style-name="P4"/>
+<text:p text:style-name="P15">
+    <text:span text:style-name="T5">Date de demande de l’examen :<text:tab/>
+    </text:span>
+</text:p>
+<text:p text:style-name="P3">
+    <text:span text:style-name="T5">Nom du prescripteur :<text:tab/>
+    </text:span>
+</text:p>
+<text:p text:style-name="P3">
+    <text:span text:style-name="T5">Nom du service prescripteur de l’examen :<text:tab/>
+    </text:span>
+</text:p>
+<text:p text:style-name="Heading_20_2"/>
+<text:p text:style-name="Heading_20_2">
+    Numération formule sanguine
+</text:p>
+<text:list xml:id="list7209985986314049233" text:style-name="L1">
+    <text:list-item>
+        <text:p text:style-name="P16">Hématie : <text:tab/>
+        </text:p>
+    </text:list-item>
+</text:list>
+<text:p text:style-name="P9"/>
+<text:p text:style-name="P11">
+    <text:span text:style-name="T1"/>
+</text:p>
